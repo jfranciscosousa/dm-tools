@@ -1,5 +1,7 @@
 const preprocess = require("svelte-preprocess");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 const mode = process.env.NODE_ENV || "development";
@@ -12,14 +14,14 @@ module.exports = {
   resolve: {
     alias: {
       svelte: path.resolve("node_modules", "svelte"),
-      root: path.resolve(__dirname, "./src/"),
+      root: path.resolve(__dirname, "src/"),
     },
     extensions: [".mjs", ".js", ".svelte"],
     mainFields: ["svelte", "browser", "module", "main"],
   },
   output: {
-    path: __dirname + "/public",
-    filename: "[name].js",
+    path: path.resolve(__dirname, "./public"),
+    filename: "[name]-[hash].js",
     chunkFilename: "[name].[id].js",
   },
   module: {
@@ -49,16 +51,26 @@ module.exports = {
       },
     ],
   },
-  resolve: {
-    alias: {
-      root: path.resolve(__dirname, "src/"),
-    },
-  },
+
   mode,
   plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "./src/index.html"),
+    }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
+      filename: "[name]-[hash].css",
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./src/static"),
+          to: path.resolve(__dirname, "./public"),
+        },
+      ],
     }),
   ],
   devtool: prod ? false : "source-map",
+  devServer: {
+    port: 6969,
+  },
 };
