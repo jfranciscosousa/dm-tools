@@ -1,12 +1,12 @@
 <script>
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import players from "root/lib/players";
+  import { state, actions } from "root/lib/players";
 
   function handleDelete(event) {
     const { id } = event.currentTarget.dataset;
 
-    players.deletePlayer(id);
+    actions.deletePlayer(id);
   }
 </script>
 
@@ -28,7 +28,7 @@
 </style>
 
 <ul>
-  {#each $players as player (player.id)}
+  {#each $state.players as player (player.id)}
     <li transition:fade="{{ key: player.id, duration: 150 }}" animate:flip>
       <button on:click="{handleDelete}" data-id="{player.id}">X</button>
 

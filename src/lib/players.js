@@ -1,5 +1,8 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
-import { writable } from "svelte/store";
+
+import { createOvermind } from "overmind";
+import { createMixin } from "overmind-svelte";
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (code) => {
@@ -11,56 +14,45 @@ function uuidv4() {
 }
 
 function loadPlayersFromStorage() {
-  const jsonString = localStorage.getItem("players");
+  const rawPlayers = localStorage.getItem("players");
 
-  if (!jsonString) return [];
+  if (!rawPlayers) return [];
 
-  return JSON.parse(jsonString);
+  return JSON.parse(rawPlayers);
 }
 
-function createPlayers() {
-  const { subscribe, update } = writable(loadPlayersFromStorage());
+const overmindObj = {
+  state: {
+    players: loadPlayersFromStorage(),
+  },
 
-  async function addPlayer({ name, initiative }) {
-    update((players) => {
-      const newPlayers = [...players, { id: uuidv4(), name, initiative }].sort(
+  actions: {
+    addPlayer({ state }, { name, initiative }) {
+      const newPlayer = { id: uuidv4(), name, initiative };
+
+      state.players = [newPlayer, ...state.players].sort(
         (player1, player2) => player2.initiative - player1.initiative
       );
+    },
 
-      localStorage.setItem("players", JSON.stringify(newPlayers));
+    deletePlayer({ state }, id) {
+      state.players = state.players.filter((player) => player.id !== id);
+    },
 
-      return newPlayers;
+    resetPlayers({ state }) {
+      state.players = [];
+    },
+  },
+
+  onInitialize: async ({ state }, overmind) => {
+    overmind.addMutationListener((mutation) => {
+      if (mutation.path.indexOf("players") === 0) {
+        localStorage.setItem("players", JSON.stringify(state.players));
+      }
     });
-  }
+  },
+};
 
-  function deletePlayer(id) {
-    update((players) => {
-      const newPlayers = players.filter((player) => player.id !== id);
+const store = createMixin(createOvermind(overmindObj));
 
-      localStorage.setItem("players", JSON.stringify(newPlayers));
-
-      return newPlayers;
-    });
-  }
-
-  function resetPlayers() {
-    update(() => {
-      const newPlayers = [];
-
-      localStorage.setItem("players", JSON.stringify(newPlayers));
-
-      return newPlayers;
-    });
-  }
-
-  return {
-    subscribe,
-    addPlayer,
-    deletePlayer,
-    resetPlayers,
-  };
-}
-
-const players = createPlayers();
-
-export default players;
+export const { state, actions } = store;

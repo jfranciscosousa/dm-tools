@@ -1,5 +1,5 @@
 <script>
-  import players from "root/lib/players";
+  import { actions } from "root/lib/players";
   import InitiativeInput from "./InitiativeInput.svelte";
   import PlayersList from "./PlayersList.svelte";
 </script>
@@ -24,7 +24,7 @@
   <div class="title">
     <h1>Initiative Tracker</h1>
 
-    <button on:click="{players.resetPlayers}">Reset</button>
+    <button on:click="{actions.resetPlayers}">Reset</button>
   </div>
 
   <PlayersList />
