@@ -40,7 +40,9 @@
   }
 
   button {
-    width: 10%;
+    display: inline-block;
+
+    width: 20%;
   }
 </style>
 
@@ -55,5 +57,5 @@
     <input name="iniative" type="number" bind:value="{initiative}" />
   </label>
 
-  <button type="submit" disabled="{!valid}">Submit</button>
+  <button type="submit" disabled="{!valid}">Add</button>
 </form>
