@@ -1,5 +1,5 @@
-<script>
-  import { actions } from "root/lib/players";
+<script lang="ts">
+  import players from "root/lib/players";
   import InitiativeInput from "./InitiativeInput.svelte";
   import PlayersList from "./PlayersList.svelte";
 </script>
@@ -30,7 +30,7 @@
   <nav class="title">
     <h1>Initiative Tracker</h1>
 
-    <button on:click="{actions.resetPlayers}">Reset</button>
+    <button on:click="{players.resetPlayers}">Reset</button>
   </nav>
 
   <PlayersList />

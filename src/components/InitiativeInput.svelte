@@ -1,5 +1,5 @@
-<script>
-  import { actions } from "root/lib/players";
+<script lang="ts">
+  import players from "root/lib/players";
 
   let playerName = "";
   let initiative = "";
@@ -7,7 +7,7 @@
   $: valid = playerName !== "" && initiative !== "";
 
   function handleSubmit() {
-    actions.addPlayer({ name: playerName, initiative });
+    players.add({ name: playerName, initiative: Number(initiative) });
     playerName = "";
     initiative = "";
 

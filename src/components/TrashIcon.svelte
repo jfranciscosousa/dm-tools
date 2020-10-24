@@ -1,12 +1,12 @@
 <script context="module">
-  export const TRASH_ICON_SIZE = "24";
+  export const TRASH_ICON_SIZE = "18";
 </script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
   width="{TRASH_ICON_SIZE}"
   height="{TRASH_ICON_SIZE}"
-  viewBox="{`0 0 ${TRASH_ICON_SIZE} ${TRASH_ICON_SIZE}`}"
+  viewBox="{`0 0 24 24`}"
   fill="none"
   stroke="currentColor"
   stroke-width="2"

@@ -16,7 +16,7 @@ module.exports = {
       svelte: path.resolve("node_modules", "svelte"),
       root: path.resolve(__dirname, "src/"),
     },
-    extensions: [".mjs", ".js", ".svelte"],
+    extensions: [".mjs", ".js", ".svelte", ".ts", ".tsx"],
     mainFields: ["svelte", "browser", "module", "main"],
   },
   output: {
@@ -37,6 +37,7 @@ module.exports = {
           },
         },
       },
+      { test: /\.tsx?$/, loader: "ts-loader" },
       {
         test: /\.css$/,
         exclude: /node_modules/,

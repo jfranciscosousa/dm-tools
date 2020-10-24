@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import { state, actions } from "root/lib/players";
+  import players from "root/lib/players";
   import TrashIcon, { TRASH_ICON_SIZE } from "./TrashIcon.svelte";
 
   function handleDelete(event) {
     const { id } = event.currentTarget.dataset;
 
-    actions.deletePlayer(id);
+    players.delete(id);
   }
 </script>
 
@@ -36,8 +36,8 @@
 </style>
 
 <ul style="--trashIconSize: {-TRASH_ICON_SIZE}px">
-  {#each $state.players as player (player.id)}
-    <li transition:fade="{{ key: player.id, duration: 150 }}" animate:flip>
+  {#each $players as player (player.id)}
+    <li transition:fade="{{ duration: 150 }}" animate:flip>
       <button on:click="{handleDelete}" data-id="{player.id}">
         <TrashIcon />
       </button>
