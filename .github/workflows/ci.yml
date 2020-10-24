@@ -30,4 +30,5 @@ jobs:
           yarn
           yarn lint
           yarn lint-styles
-          bin/build
+          yarn cypress install
+          bin/test
