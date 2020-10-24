@@ -1,7 +1,7 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import players from "root/lib/players";
+  import players from "root/lib/playersStore";
   import generateCssVariable from "root/lib/generateCssVariables";
   import TrashIcon, { TRASH_ICON_SIZE } from "./TrashIcon.svelte";
 
@@ -10,42 +10,53 @@
   });
 
   function handleDelete(id) {
-    return () => players.delete(id);
+    return () => {
+      if (!window.confirm("Are you sure?")) return;
+
+      players.delete(id);
+    };
   }
 </script>
 
 <style>
   ul {
-    margin: 1rem 0;
+    width: 80%;
+    margin: 2rem auto;
   }
 
   li {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+
     margin: 1rem 0;
+  }
+
+  li:not(:last-child) {
+    padding-bottom: 1rem;
+
+    border-bottom: 1px grey solid;
   }
 
   button {
     padding: 0;
-    margin-left: var(--trashIconSize);
 
     background: none;
     border: none;
     cursor: pointer;
-
-    transform: translateX(-8px);
   }
 </style>
 
 <ul {...cssVariables}>
   {#each $players as player (player.id)}
     <li transition:fade="{{ duration: 150 }}" animate:flip>
+
+      <p>{player.name} - {player.initiative}</p>
+
       <button on:click="{handleDelete(player.id)}">
         <TrashIcon />
       </button>
-
-      <p>{player.name} - {player.initiative}</p>
     </li>
   {/each}
 </ul>

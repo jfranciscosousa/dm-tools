@@ -1,5 +1,8 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
+  "exclude": [
+    "cypress"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

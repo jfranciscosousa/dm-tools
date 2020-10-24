@@ -1,5 +1,5 @@
 <script lang="ts">
-  import players from "root/lib/players";
+  import players from "root/lib/playersStore";
 
   let playerName = "";
   let initiative = "";
@@ -54,7 +54,7 @@
 
   <label class="initiative">
     Initiative
-    <input name="iniative" type="number" bind:value="{initiative}" />
+    <input name="initiative" type="number" bind:value="{initiative}" />
   </label>
 
   <button type="submit" disabled="{!valid}">Add</button>

@@ -70,6 +70,7 @@ module.exports = {
         argsIgnorePattern: "^_",
       },
     ],
+    "no-alert": "off",
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": [
       2,

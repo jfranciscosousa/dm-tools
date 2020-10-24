@@ -1,7 +1,13 @@
 <script lang="ts">
-  import players from "root/lib/players";
+  import players from "root/lib/playersStore";
   import InitiativeInput from "./InitiativeInput.svelte";
   import PlayersList from "./PlayersList.svelte";
+
+  function handleReset() {
+    if (!window.confirm("Are you sure?")) return;
+
+    players.reset();
+  }
 </script>
 
 <style>
@@ -30,7 +36,7 @@
   <nav class="title">
     <h1>Initiative Tracker</h1>
 
-    <button on:click="{players.resetPlayers}">Reset</button>
+    <button on:click="{handleReset}">Reset</button>
   </nav>
 
   <PlayersList />

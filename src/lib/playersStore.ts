@@ -50,7 +50,7 @@ function createPlayersStore() {
       update((players) => players.filter((player) => player.id !== id));
     },
 
-    resetPlayers() {
+    reset() {
       set([]);
     },
   };
