@@ -4,10 +4,8 @@
   import players from "root/lib/players";
   import TrashIcon, { TRASH_ICON_SIZE } from "./TrashIcon.svelte";
 
-  function handleDelete(event) {
-    const { id } = event.currentTarget.dataset;
-
-    players.delete(id);
+  function handleDelete(id) {
+    return () => players.delete(id);
   }
 </script>
 
@@ -38,7 +36,7 @@
 <ul style="--trashIconSize: {-TRASH_ICON_SIZE}px">
   {#each $players as player (player.id)}
     <li transition:fade="{{ duration: 150 }}" animate:flip>
-      <button on:click="{handleDelete}" data-id="{player.id}">
+      <button on:click="{handleDelete(player.id)}">
         <TrashIcon />
       </button>
 
