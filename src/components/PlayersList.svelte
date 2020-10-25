@@ -2,12 +2,7 @@
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
   import players from "root/lib/playersStore";
-  import generateCssVariable from "root/lib/generateCssVariables";
-  import TrashIcon, { TRASH_ICON_SIZE } from "./TrashIcon.svelte";
-
-  const cssVariables = generateCssVariable({
-    trashIconSize: `${-TRASH_ICON_SIZE}px`,
-  });
+  import TrashIcon from "./TrashIcon.svelte";
 
   function handleDelete(id) {
     return () => {
@@ -48,7 +43,7 @@
   }
 </style>
 
-<ul {...cssVariables}>
+<ul>
   {#each $players as player (player.id)}
     <li transition:fade="{{ duration: 150 }}" animate:flip>
 

@@ -3,12 +3,6 @@
 
 import { writable } from "svelte/store";
 
-interface Player {
-  id?: string;
-  name: string;
-  initiative: number;
-}
-
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (code) => {
     const seed = (Math.random() * 16) | 0;
@@ -36,7 +30,7 @@ function createPlayersStore() {
   return {
     subscribe,
 
-    add(player: Player) {
+    add(player: Player): Player {
       const newPlayer: Player = { id: uuidv4(), ...player };
 
       update((players) =>
@@ -44,6 +38,8 @@ function createPlayersStore() {
           (player1, player2) => player2.initiative - player1.initiative
         )
       );
+
+      return player;
     },
 
     delete(id: string) {
