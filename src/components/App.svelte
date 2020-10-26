@@ -48,7 +48,7 @@
     width: 100%;
   }
 
-  .actions > * + * {
+  .actions > button:last-child {
     margin-top: 1rem;
   }
 </style>
