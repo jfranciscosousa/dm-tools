@@ -1,7 +1,27 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
 
-import { writable } from "svelte/store";
+import { readable, writable } from "svelte/store";
+
+interface PlayersStore {
+  players: { [id: string]: Player };
+  currentTurn?: number;
+  roundNumber: number;
+}
+
+interface PublicPlayersStore {
+  players: Player[];
+  currentTurn?: number;
+  roundNumber: number;
+}
+
+function initialState(): PlayersStore {
+  return {
+    players: {},
+    currentTurn: null,
+    roundNumber: null,
+  };
+}
 
 function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (code) => {
@@ -12,42 +32,82 @@ function uuidv4() {
   });
 }
 
-function loadPlayersFromStorage(): Player[] {
+function loadPlayersFromStorage(): PlayersStore {
   const rawPlayers = localStorage.getItem("players");
 
-  if (!rawPlayers) return [];
+  if (!rawPlayers) return initialState();
 
   return JSON.parse(rawPlayers);
 }
 
 function createPlayersStore() {
   const { subscribe, set, update } = writable(loadPlayersFromStorage());
+  // We want the readable state of the store to be a players list, so we wrap
+  // the writable store inside a readable and we edit it with the subscribe function
+  const { subscribe: readableSubscribe } = readable(
+    {} as PublicPlayersStore,
+    (set) => {
+      subscribe((store) => {
+        const sortedPlayersList = Object.values(store.players).sort(
+          (player1, player2) => player2.initiative - player1.initiative
+        );
 
-  subscribe((players) =>
-    localStorage.setItem("players", JSON.stringify(players))
+        set({ ...store, players: sortedPlayersList });
+      });
+    }
   );
 
+  subscribe((store) => {
+    localStorage.setItem("players", JSON.stringify(store));
+  });
+
   return {
-    subscribe,
+    subscribe: readableSubscribe,
 
-    add(player: Player): Player {
-      const newPlayer: Player = { id: uuidv4(), ...player };
+    add(player: Player) {
+      update((store) => {
+        const newPlayer = { id: uuidv4(), ...player };
 
-      update((players) =>
-        [newPlayer, ...players].sort(
-          (player1, player2) => player2.initiative - player1.initiative
-        )
-      );
+        store.players[newPlayer.id] = newPlayer;
 
-      return player;
+        return store;
+      });
+    },
+
+    nextTurn() {
+      update((store) => {
+        if (store.roundNumber == null) store.roundNumber = 1;
+
+        if (store.currentTurn === null || store.currentTurn === undefined) {
+          store.currentTurn = 0;
+        } else store.currentTurn += 1;
+
+        if (store.currentTurn >= Object.keys(store.players).length) {
+          store.currentTurn = 0;
+
+          store.roundNumber += 1;
+        }
+
+        return store;
+      });
+    },
+
+    endBattle() {
+      update((store) => {
+        return { ...store, currentTurn: null, roundNumber: null };
+      });
     },
 
     delete(id: string) {
-      update((players) => players.filter((player) => player.id !== id));
+      update((store) => {
+        delete store.players[id];
+
+        return store;
+      });
     },
 
     reset() {
-      set([]);
+      set(initialState());
     },
   };
 }

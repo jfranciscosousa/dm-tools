@@ -19,6 +19,7 @@
   form {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
     justify-content: space-between;
     width: 100%;
 
@@ -40,9 +41,7 @@
   }
 
   button {
-    display: inline-block;
-
-    width: 20%;
+    padding: 4px 8px;
   }
 </style>
 
@@ -57,5 +56,7 @@
     <input name="initiative" type="number" bind:value="{initiative}" />
   </label>
 
-  <button type="submit" disabled="{!valid}">Add</button>
+  <div>
+    <button type="submit" disabled="{!valid}">Add</button>
+  </div>
 </form>

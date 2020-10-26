@@ -23,23 +23,60 @@
 
   nav {
     display: flex;
+    flex-direction: column;
+  }
+
+  .title-row {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 2rem;
   }
 
   h1 {
     font-size: 150%;
   }
+
+  .players {
+    flex-grow: 1;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .actions > * + * {
+    margin-top: 1rem;
+  }
 </style>
 
 <main>
-  <nav class="title">
-    <h1>Initiative Tracker</h1>
+  <nav>
+    <div class="title-row">
+      <h1>Initiative Tracker</h1>
 
-    <button on:click="{handleReset}">Reset</button>
+      <button on:click="{handleReset}">Reset</button>
+    </div>
+
+    {#if $players.currentTurn != null}Round number: {$players.roundNumber}{/if}
   </nav>
 
-  <PlayersList />
+  <div class="players">
+    <PlayersList />
+  </div>
 
-  <InitiativeInput />
+  <div class="actions">
+    {#if $players.currentTurn != null}
+      <button on:click="{players.nextTurn}">Next turn</button>
+
+      <button on:click="{players.endBattle}">End battle</button>
+    {:else}
+      <InitiativeInput />
+
+      <button on:click="{players.nextTurn}">Start battle</button>
+    {/if}
+  </div>
 </main>

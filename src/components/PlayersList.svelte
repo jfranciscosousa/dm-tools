@@ -1,14 +1,14 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import players from "root/lib/playersStore";
+  import playersStore from "root/lib/playersStore";
   import TrashIcon from "./TrashIcon.svelte";
 
   function handleDelete(id) {
     return () => {
       if (!window.confirm("Are you sure?")) return;
 
-      players.delete(id);
+      playersStore.delete(id);
     };
   }
 </script>
@@ -20,18 +20,26 @@
   }
 
   li {
+    margin: 1rem 0;
+  }
+
+  li > div {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    margin: 1rem 0;
+    padding: 0.5rem;
   }
 
   li:not(:last-child) {
     padding-bottom: 1rem;
 
     border-bottom: 1px grey solid;
+  }
+
+  .currentTurn {
+    background-color: grey;
   }
 
   button {
@@ -44,14 +52,15 @@
 </style>
 
 <ul>
-  {#each $players as player (player.id)}
+  {#each $playersStore.players as player, index (player.id)}
     <li transition:fade="{{ duration: 150 }}" animate:flip>
+      <div class:currentTurn="{index === $playersStore.currentTurn}">
+        <p>{player.name} - {player.initiative}</p>
 
-      <p>{player.name} - {player.initiative}</p>
-
-      <button on:click="{handleDelete(player.id)}">
-        <TrashIcon />
-      </button>
+        <button on:click="{handleDelete(player.id)}">
+          <TrashIcon />
+        </button>
+      </div>
     </li>
   {/each}
 </ul>

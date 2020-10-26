@@ -10,7 +10,8 @@
     "lint-styles": "stylelint \"src/**/*.css\" \"src/**/*.svelte\""
   },
   "dependencies": {
-    "svelte": "^3.0.0"
+    "svelte": "^3.0.0",
+    "unistore": "^3.5.2"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^1.0.10",

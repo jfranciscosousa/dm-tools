@@ -1,4 +1,8 @@
 describe("Initiative Tracker", () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
+  });
+
   it("enters a player into the initiative list", () => {
     cy.visit("/");
 
@@ -66,6 +70,7 @@ describe("Initiative Tracker", () => {
     cy.get("form").submit();
 
     cy.contains("Reset").click();
+    cy.wait(500);
 
     cy.get("ul").should(($el) => {
       expect($el.text()).to.be.empty;
