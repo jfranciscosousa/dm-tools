@@ -3,19 +3,25 @@
 
 import { readable, writable } from "svelte/store";
 
-interface PlayersStore {
+interface Player {
+  id?: string;
+  name: string;
+  initiative: number;
+}
+
+interface InternalPlayersStore {
   players: { [id: string]: Player };
   currentTurn?: number;
   roundNumber: number;
 }
 
-interface PublicPlayersStore {
+interface PlayersStore {
   players: Player[];
   currentTurn?: number;
   roundNumber: number;
 }
 
-function initialState(): PlayersStore {
+function initialState(): InternalPlayersStore {
   return {
     players: {},
     currentTurn: null,
@@ -32,7 +38,7 @@ function uuidv4() {
   });
 }
 
-function loadPlayersFromStorage(): PlayersStore {
+function loadPlayersFromStorage(): InternalPlayersStore {
   const rawPlayers = localStorage.getItem("players");
 
   if (!rawPlayers) return initialState();
@@ -45,7 +51,7 @@ function createPlayersStore() {
   // We want the readable state of the store to be a players list, so we wrap
   // the writable store inside a readable and we edit it with the subscribe function
   const { subscribe: readableSubscribe } = readable(
-    {} as PublicPlayersStore,
+    {} as PlayersStore,
     (set) => {
       subscribe((store) => {
         const sortedPlayersList = Object.values(store.players).sort(
