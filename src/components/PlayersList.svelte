@@ -4,7 +4,7 @@
   import playersStore from "root/lib/playersStore";
   import TrashIcon from "./TrashIcon.svelte";
 
-  function handleDelete(id) {
+  function handleDelete(id: string) {
     return () => {
       if (!window.confirm("Are you sure?")) return;
 
@@ -20,30 +20,29 @@
   }
 
   li {
-    margin: 1rem 0;
-  }
-
-  li > div {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
     padding: 0.5rem;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
   }
 
   li:not(:last-child) {
-    padding-bottom: 1rem;
-
-    border-bottom: 1px grey solid;
+    margin-bottom: 1rem;
   }
 
   .currentTurn {
-    background-color: grey;
+    background-color: var(--selection);
+    border: 1px solid var(--selection);
   }
 
   button {
+    display: inline;
     padding: 0;
+    margin: 0;
 
     background: none;
     border: none;
@@ -53,14 +52,15 @@
 
 <ul>
   {#each $playersStore.players as player, index (player.id)}
-    <li transition:fade="{{ duration: 150 }}" animate:flip>
-      <div class:currentTurn="{index === $playersStore.currentTurn}">
-        <p>{player.name} - {player.initiative}</p>
+    <li
+      transition:fade="{{ duration: 150 }}"
+      animate:flip
+      class:currentTurn="{index === $playersStore.currentTurn}">
+      <p>{player.initiative} - {player.name}</p>
 
-        <button on:click="{handleDelete(player.id)}">
-          <TrashIcon />
-        </button>
-      </div>
+      <button on:click="{handleDelete(player.id)}">
+        <TrashIcon />
+      </button>
     </li>
   {/each}
 </ul>

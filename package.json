@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "svelte": "^3.29.4",
-    "unistore": "^3.5.2"
+    "unistore": "^3.5.2",
+    "water.css": "^2.0.0"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^1.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
     "babel-eslint": "^10.1.0",
     "copy-webpack-plugin": "^6.2.1",
     "css-loader": "^5.0.0",

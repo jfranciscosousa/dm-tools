@@ -33,9 +33,9 @@ describe("Initiative Tracker", () => {
       });
 
       expect(players).to.eql([
-        "Barbarian - 18",
-        "Warrior Elf 420 - 12",
-        "Ranger - 8",
+        "18 - Barbarian",
+        "12 - Warrior Elf 420",
+        "8 - Ranger",
       ]);
     });
   });
@@ -76,7 +76,7 @@ describe("Initiative Tracker", () => {
 
     cy.contains("Round number: 1").should("be.visible");
     cy.get("ul").should(($el) => {
-      expect($el.children().first().children("div")).to.have.class(
+      expect($el.children().first()).to.have.class(
         "currentTurn"
       );
     });
@@ -93,11 +93,11 @@ describe("Initiative Tracker", () => {
 
     cy.contains("Round number: 1").should("be.visible");
     cy.get("ul").should(($el) => {
-      expect($el.children().first().children("div")).to.not.have.class(
+      expect($el.children().first()).to.not.have.class(
         "currentTurn"
       );
 
-      expect($el.children().last().children("div")).to.have.class(
+      expect($el.children().last()).to.have.class(
         "currentTurn"
       );
     });
@@ -115,7 +115,7 @@ describe("Initiative Tracker", () => {
 
     cy.contains("Round number: 2").should("be.visible");
     cy.get("ul").should(($el) => {
-      expect($el.children().first().children("div")).to.have.class(
+      expect($el.children().first()).to.have.class(
         "currentTurn"
       );
     });

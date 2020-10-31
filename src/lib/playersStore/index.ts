@@ -64,13 +64,13 @@ function createPlayersStore() {
   // the writable store inside a readable and we edit it with the subscribe function
   const { subscribe: readableSubscribe } = readable(
     {} as PlayersStore,
-    (set) => {
+    (internalSet) => {
       subscribe((store) => {
         const sortedPlayersList = Object.values(store.players).sort(
           (player1, player2) => player2.initiative - player1.initiative
         );
 
-        set({ ...store, players: sortedPlayersList });
+        internalSet({ ...store, players: sortedPlayersList });
       });
     }
   );
@@ -111,9 +111,7 @@ function createPlayersStore() {
     },
 
     endBattle() {
-      update((store) => {
-        return { ...store, currentTurn: null, roundNumber: null };
-      });
+      update((store) => ({ ...store, currentTurn: null, roundNumber: null }));
     },
 
     delete(id: string) {

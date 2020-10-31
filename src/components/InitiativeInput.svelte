@@ -39,10 +39,6 @@
     width: 15%;
     margin: 0 1rem;
   }
-
-  button {
-    padding: 4px 8px;
-  }
 </style>
 
 <form on:submit|preventDefault="{handleSubmit}">
@@ -56,7 +52,5 @@
     <input name="initiative" type="number" bind:value="{initiative}" />
   </label>
 
-  <div>
-    <button type="submit" disabled="{!valid}">Add</button>
-  </div>
+  <div><button type="submit" disabled="{!valid}">Add</button></div>
 </form>

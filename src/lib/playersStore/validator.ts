@@ -5,36 +5,33 @@ const schema = {
   properties: {
     players: {
       type: "object",
-      properties: {
-        "06029833-d190-4434-8339-dd11431eb2b6": {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-            },
-            name: {
-              type: "string",
-            },
-            initiative: {
-              type: "integer",
-            },
+      additionalProperties: {
+        type: "object",
+        properties: {
+          id: {
+            type: "string",
           },
-          required: ["id", "name", "initiative"],
+          name: {
+            type: "string",
+          },
+          initiative: {
+            type: "integer",
+          },
         },
+        required: ["id", "name", "initiative"],
       },
-      required: ["06029833-d190-4434-8339-dd11431eb2b6"],
     },
     currentTurn: {
-      type: "null",
+      type: ["integer", "null"],
     },
     roundNumber: {
-      type: "null",
+      type: ["integer", "null"],
     },
   },
-  required: ["players", "currentTurn", "roundNumber"],
+  required: ["players"],
 };
 
-export default function validatePlayersStore(data) : boolean {
+export default function validatePlayersStore(data): boolean {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
   const valid = validate(data);
