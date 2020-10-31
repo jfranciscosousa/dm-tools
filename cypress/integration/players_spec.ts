@@ -76,9 +76,7 @@ describe("Initiative Tracker", () => {
 
     cy.contains("Round number: 1").should("be.visible");
     cy.get("ul").should(($el) => {
-      expect($el.children().first()).to.have.class(
-        "currentTurn"
-      );
+      expect($el.children().first()).to.have.class("currentTurn");
     });
   });
 
@@ -93,13 +91,9 @@ describe("Initiative Tracker", () => {
 
     cy.contains("Round number: 1").should("be.visible");
     cy.get("ul").should(($el) => {
-      expect($el.children().first()).to.not.have.class(
-        "currentTurn"
-      );
+      expect($el.children().first()).to.not.have.class("currentTurn");
 
-      expect($el.children().last()).to.have.class(
-        "currentTurn"
-      );
+      expect($el.children().last()).to.have.class("currentTurn");
     });
   });
 
@@ -115,9 +109,7 @@ describe("Initiative Tracker", () => {
 
     cy.contains("Round number: 2").should("be.visible");
     cy.get("ul").should(($el) => {
-      expect($el.children().first()).to.have.class(
-        "currentTurn"
-      );
+      expect($el.children().first()).to.have.class("currentTurn");
     });
   });
 
@@ -142,5 +134,38 @@ describe("Initiative Tracker", () => {
     });
 
     cy.contains("Initiative Tracker").should("be.visible");
+  });
+
+  it("loads the data in the localStorage", () => {
+    cy.visit("/", {
+      onBeforeLoad: (window) => {
+        window.localStorage.setItem(
+          PLAYERS_STORE_KEY,
+          JSON.stringify({
+            players: {
+              "43ecfaae-b302-4417-8853-10b23a75bac0": {
+                id: "43ecfaae-b302-4417-8853-10b23a75bac0",
+                name: "Fernando",
+                initiative: 20,
+              },
+              "bfc06b03-5461-471b-a83a-f864bf9fdc32": {
+                id: "bfc06b03-5461-471b-a83a-f864bf9fdc32",
+                name: "Coiso",
+                initiative: 10,
+              },
+            },
+            currentTurn: 1,
+            roundNumber: 2,
+          })
+        );
+      },
+    });
+
+    cy.contains("20 - Fernando").should("be.visible");
+    cy.contains("10 - Coiso").should("be.visible");
+    cy.contains("Round number: 2").should("be.visible");
+    cy.get("ul").should(($el) => {
+      expect($el.children().last()).to.have.class("currentTurn");
+    });
   });
 });
