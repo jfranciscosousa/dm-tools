@@ -2,6 +2,9 @@
 /* eslint-disable no-bitwise */
 
 import { readable, writable } from "svelte/store";
+import validatePlayersStore from "./validator";
+
+export const PLAYERS_STORE_KEY = "players";
 
 interface Player {
   id?: string;
@@ -39,11 +42,20 @@ function uuidv4() {
 }
 
 function loadPlayersFromStorage(): InternalPlayersStore {
-  const rawPlayers = localStorage.getItem("players");
+  const rawPlayers = localStorage.getItem(PLAYERS_STORE_KEY);
+  const players = (() => {
+    try {
+      return JSON.parse(rawPlayers);
+    } catch (error) {
+      return false;
+    }
+  })();
 
-  if (!rawPlayers) return initialState();
+  if (!players) return initialState();
 
-  return JSON.parse(rawPlayers);
+  if (!validatePlayersStore(players)) return initialState();
+
+  return players;
 }
 
 function createPlayersStore() {
@@ -64,7 +76,7 @@ function createPlayersStore() {
   );
 
   subscribe((store) => {
-    localStorage.setItem("players", JSON.stringify(store));
+    localStorage.setItem(PLAYERS_STORE_KEY, JSON.stringify(store));
   });
 
   return {

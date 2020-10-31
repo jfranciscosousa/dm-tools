@@ -1,3 +1,5 @@
+import { PLAYERS_STORE_KEY } from "../../src/lib/playersStore";
+
 describe("Initiative Tracker", () => {
   beforeEach(() => {
     cy.clearLocalStorage();
@@ -117,5 +119,28 @@ describe("Initiative Tracker", () => {
         "currentTurn"
       );
     });
+  });
+
+  it("gracefully handles a bad schema on local storage", () => {
+    cy.visit("/", {
+      onBeforeLoad: (window) => {
+        window.localStorage.setItem(
+          PLAYERS_STORE_KEY,
+          JSON.stringify({ bad: "storage" })
+        );
+      },
+    });
+
+    cy.contains("Initiative Tracker").should("be.visible");
+  });
+
+  it("gracefully handles invalid json on local storage", () => {
+    cy.visit("/", {
+      onBeforeLoad: (window) => {
+        window.localStorage.setItem(PLAYERS_STORE_KEY, "asd");
+      },
+    });
+
+    cy.contains("Initiative Tracker").should("be.visible");
   });
 });
