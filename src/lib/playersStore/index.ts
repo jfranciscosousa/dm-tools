@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
 
-import { readable, writable } from "svelte/store";
+import { Readable, readable, writable } from "svelte/store";
 import validatePlayersStore from "./validator";
 
 export const PLAYERS_STORE_KEY = "players";
@@ -58,29 +58,30 @@ function loadPlayersFromStorage(): InternalPlayersStore {
   return players;
 }
 
+// We want the readable state of the store to be a players list, so we wrap
+// the writable store inside a readable and we edit it with the subscribe function
+function wrapSubscribe(subscribe) {
+  return readable({} as PlayersStore, (internalSet) => {
+    subscribe((store) => {
+      const sortedPlayersList = Object.values(store.players).sort(
+        (player1: Player, player2: Player) =>
+          player2.initiative - player1.initiative
+      );
+
+      internalSet({ ...store, players: sortedPlayersList });
+    });
+  }).subscribe;
+}
+
 function createPlayersStore() {
   const { subscribe, set, update } = writable(loadPlayersFromStorage());
-  // We want the readable state of the store to be a players list, so we wrap
-  // the writable store inside a readable and we edit it with the subscribe function
-  const { subscribe: readableSubscribe } = readable(
-    {} as PlayersStore,
-    (internalSet) => {
-      subscribe((store) => {
-        const sortedPlayersList = Object.values(store.players).sort(
-          (player1, player2) => player2.initiative - player1.initiative
-        );
-
-        internalSet({ ...store, players: sortedPlayersList });
-      });
-    }
-  );
 
   subscribe((store) => {
     localStorage.setItem(PLAYERS_STORE_KEY, JSON.stringify(store));
   });
 
   return {
-    subscribe: readableSubscribe,
+    subscribe: wrapSubscribe(subscribe),
 
     add(player: Player) {
       update((store) => {
