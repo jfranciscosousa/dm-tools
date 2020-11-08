@@ -4,7 +4,7 @@
   import playersStore from "root/lib/playersStore";
   import TrashIcon from "./TrashIcon.svelte";
 
-  function handleDelete(id: string) {
+  function handleDelete(id) {
     return () => {
       if (!window.confirm("Are you sure?")) return;
 
