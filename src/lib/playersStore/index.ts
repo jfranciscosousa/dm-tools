@@ -1,28 +1,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
 
-import { Readable, readable, writable } from "svelte/store";
+import { readable, writable } from "svelte/store";
 import validatePlayersStore from "./validator";
 
 export const PLAYERS_STORE_KEY = "players";
-
-interface Player {
-  id?: string;
-  name: string;
-  initiative: number;
-}
-
-interface InternalPlayersStore {
-  players: { [id: string]: Player };
-  currentTurn?: number;
-  roundNumber: number;
-}
-
-interface PlayersStore {
-  players: Player[];
-  currentTurn?: number;
-  roundNumber: number;
-}
 
 function initialState(): InternalPlayersStore {
   return {

@@ -1,40 +1,17 @@
-import Ajv from "ajv";
+export default function validatePlayersStore(
+  data: InternalPlayersStore
+): boolean {
+  if (data.roundNumber && typeof data.roundNumber !== "number") return false;
+  if (data.currentTurn && typeof data.currentTurn !== "number") return false;
+  if (typeof data.players !== "object") return false;
 
-const schema = {
-  type: "object",
-  properties: {
-    players: {
-      type: "object",
-      additionalProperties: {
-        type: "object",
-        properties: {
-          id: {
-            type: "string",
-          },
-          name: {
-            type: "string",
-          },
-          initiative: {
-            type: "integer",
-          },
-        },
-        required: ["id", "name", "initiative"],
-      },
-    },
-    currentTurn: {
-      type: ["integer", "null"],
-    },
-    roundNumber: {
-      type: ["integer", "null"],
-    },
-  },
-  required: ["players"],
-};
+  if (Object.keys(data.players).length === 0) return true;
 
-export default function validatePlayersStore(data): boolean {
-  const ajv = new Ajv();
-  const validate = ajv.compile(schema);
-  const valid = validate(data);
+  const player = data.players[Object.keys(data.players)[0]];
 
-  return valid as boolean;
+  if (typeof player.id !== "string") return false;
+  if (typeof player.name !== "string") return false;
+  if (typeof player.initiative !== "number") return false;
+
+  return true;
 }

@@ -1,15 +1,17 @@
 {
+  "browserslist": "last 2 versions, not dead, >1%",
   "scripts": {
     "build": "rm -rf public/ && NODE_ENV=production snowpack build",
     "dev": "NODE_ENV=development snowpack dev",
     "prettier": "prettier --write src/**/*",
     "prettier-check": "prettier --check src/**/*",
-    "lint": "eslint src --ext svelte,js",
+    "lint": "eslint src --ext svelte,js,ts",
     "lint-styles": "stylelint \"src/**/*.css\" \"src/**/*.svelte\""
   },
   "dependencies": {
     "@snowpack/plugin-optimize": "^0.2.8",
     "@snowpack/plugin-postcss": "^1.0.7",
+    "ajv": "^6.12.6",
     "svelte": "^3.29.4",
     "water.css": "^2.0.0"
   },

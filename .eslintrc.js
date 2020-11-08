@@ -18,20 +18,10 @@ module.exports = {
     },
     {
       files: ["*.ts"],
-      extends: [
-        "airbnb-base",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-        "prettier",
-      ],
+      extends: ["plugin:@typescript-eslint/recommended"],
     },
   ],
   settings: {
-    "import/resolver": {
-      node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"],
-      },
-    },
     "svelte3/ignore-styles": () => true,
     "svelte3/preprocess": eslintSveltePreprocess(svelteConfig.preprocess),
   },
@@ -49,16 +39,6 @@ module.exports = {
         blankLine: "always",
         prev: "*",
         next: "return",
-      },
-      {
-        blankLine: "always",
-        prev: "*",
-        next: "if",
-      },
-      {
-        blankLine: "always",
-        prev: "if",
-        next: "*",
       },
     ],
     "no-param-reassign": [
@@ -90,11 +70,7 @@ module.exports = {
     ],
     "no-alert": "off",
     "import/no-extraneous-dependencies": 0,
-    "import/no-unresolved": [
-      2,
-      {
-        ignore: ["root/"],
-      },
-    ],
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
   },
 };

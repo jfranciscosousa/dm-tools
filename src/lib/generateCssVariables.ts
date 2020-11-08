@@ -1,4 +1,6 @@
-export default function stringifyCssVariables(object: object) {
+export default function stringifyCssVariables(
+  object: Record<string, unknown>
+): { style: string } {
   const entries = Object.entries(object);
 
   return {
