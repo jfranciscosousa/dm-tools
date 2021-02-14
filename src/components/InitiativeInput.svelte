@@ -1,13 +1,17 @@
 <script lang="ts">
-  import players from "root/lib/playersStore";
+  import db from "root/lib/db";
 
   let playerName = "";
   let initiative = "";
   let inputRef;
   $: valid = playerName !== "" && initiative !== "";
 
-  function handleSubmit() {
-    players.add({ name: playerName, initiative: Number(initiative) });
+  async function handleSubmit() {
+    await db.players.add({
+      name: playerName,
+      initiative: Number(initiative),
+      damage: 0,
+    });
     playerName = "";
     initiative = "";
 
@@ -26,6 +30,12 @@
     margin-top: auto;
   }
 
+  @media (max-width: 600px) {
+    form {
+      flex-wrap: wrap;
+    }
+  }
+
   label {
     display: flex;
     flex-direction: column;
@@ -33,11 +43,11 @@
 
   .playerName {
     flex-grow: 1;
+    margin-right: 1rem;
   }
 
   .initiative {
-    width: 15%;
-    margin: 0 1rem;
+    width: 80px;
   }
 </style>
 

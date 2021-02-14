@@ -1,21 +1,51 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import playersStore from "root/lib/playersStore";
+  import db from "root/lib/db";
   import TrashIcon from "./TrashIcon.svelte";
+
+  const players = db.$players;
+
+  const currentTurn = db.useQuery(async () => {
+    const setting = await db.settings.where({ key: "currentTurn" }).first();
+
+    return setting?.value;
+  });
 
   function handleDelete(id) {
     return () => {
       if (!window.confirm("Are you sure?")) return;
 
-      playersStore.delete(id);
+      db.players.delete(id);
+    };
+  }
+
+  function handleDamage(player) {
+    return (event) => {
+      const input = event.target.value;
+
+      if (!input.length) return;
+
+      const value = input.slice(1, input.length);
+      let damage = player.damage || 0;
+
+      if (input.charAt(0) === "+") {
+        damage += Number(value);
+      }
+
+      if (input.charAt(0) === "-") {
+        damage -= Number(value);
+      }
+
+      db.players.update(player.id, { damage });
+      event.target.value = "";
     };
   }
 </script>
 
 <style>
   ul {
-    width: 80%;
+    width: 100%;
     margin: 2rem auto;
   }
 
@@ -34,6 +64,10 @@
     margin-bottom: 1rem;
   }
 
+  .name {
+    width: 12rem;
+  }
+
   .currentTurn {
     background-color: var(--selection);
     border: 1px solid var(--selection);
@@ -48,19 +82,29 @@
     border: none;
     cursor: pointer;
   }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
 </style>
 
 <ul>
-  {#each $playersStore.players as player, index (player.id)}
+  {#each $players as player, index (player.id)}
     <li
-      transition:fade="{{ duration: 150 }}"
+      transition:fade|local="{{ duration: 150 }}"
       animate:flip
-      class:currentTurn="{index === $playersStore.currentTurn}">
-      <p>{player.initiative} - {player.name}</p>
+      class:currentTurn="{index === $currentTurn}">
+      <p class="name">{player.initiative} - {player.name}</p>
+      <p>{player.damage}</p>
 
-      <button on:click="{handleDelete(player.id)}">
-        <TrashIcon />
-      </button>
+      <div class="actions">
+        <input on:change="{handleDamage(player)}" size="6" />
+
+        <button on:click="{handleDelete(player.id)}">
+          <TrashIcon />
+        </button>
+      </div>
     </li>
   {/each}
 </ul>

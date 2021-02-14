@@ -12,6 +12,8 @@
     "@snowpack/plugin-optimize": "^0.2.8",
     "@snowpack/plugin-postcss": "^1.0.7",
     "ajv": "^6.12.6",
+    "dexie": "^3.0.3",
+    "dexie-observable": "^3.0.0-beta.10",
     "svelte": "^3.29.4",
     "water.css": "^2.0.0"
   },

@@ -52,6 +52,7 @@ module.exports = {
           "req",
           "acc",
           "result",
+          "event",
         ],
       },
     ],

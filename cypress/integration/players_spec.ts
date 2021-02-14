@@ -1,8 +1,8 @@
-import { PLAYERS_STORE_KEY } from "../../src/lib/playersStore";
+import db from "../../src/lib/db";
 
 describe("Initiative Tracker", () => {
   beforeEach(() => {
-    cy.clearLocalStorage();
+    indexedDB.deleteDatabase("MyDatabase");
   });
 
   function insertPlayer(player, initiative) {
@@ -33,9 +33,9 @@ describe("Initiative Tracker", () => {
       });
 
       expect(players).to.eql([
-        "18 - Barbarian",
-        "12 - Warrior Elf 420",
-        "8 - Ranger",
+        "18 - Barbarian 0",
+        "12 - Warrior Elf 420 0",
+        "8 - Ranger 0",
       ]);
     });
   });
@@ -113,51 +113,13 @@ describe("Initiative Tracker", () => {
     });
   });
 
-  it("gracefully handles a bad schema on local storage", () => {
-    cy.visit("/", {
-      onBeforeLoad: (window) => {
-        window.localStorage.setItem(
-          PLAYERS_STORE_KEY,
-          JSON.stringify({ bad: "storage" })
-        );
-      },
-    });
-
-    cy.contains("Initiative Tracker").should("be.visible");
-  });
-
-  it("gracefully handles invalid json on local storage", () => {
-    cy.visit("/", {
-      onBeforeLoad: (window) => {
-        window.localStorage.setItem(PLAYERS_STORE_KEY, "asd");
-      },
-    });
-
-    cy.contains("Initiative Tracker").should("be.visible");
-  });
-
   it("loads the data in the localStorage", () => {
     cy.visit("/", {
-      onBeforeLoad: (window) => {
-        window.localStorage.setItem(
-          PLAYERS_STORE_KEY,
-          JSON.stringify({
-            players: {
-              "43ecfaae-b302-4417-8853-10b23a75bac0": {
-                id: "43ecfaae-b302-4417-8853-10b23a75bac0",
-                name: "Fernando",
-                initiative: 20,
-              },
-              "bfc06b03-5461-471b-a83a-f864bf9fdc32": {
-                id: "bfc06b03-5461-471b-a83a-f864bf9fdc32",
-                name: "Coiso",
-                initiative: 10,
-              },
-            },
-            currentTurn: 1,
-            roundNumber: 2,
-          })
-        );
+      onBeforeLoad: async (window) => {
+        await db.players.add({ name: "Fernando", initiative: 20 });
+        await db.players.add({ name: "Coiso", initiative: 10 });
+        await db.settings.add({ key: "currentTurn", value: 1 });
+        await db.settings.add({ key: "roundNumber", value: 2 });
       },
     });
 

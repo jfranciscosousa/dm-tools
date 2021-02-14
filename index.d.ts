@@ -2,6 +2,12 @@ interface Player {
   id?: string;
   name: string;
   initiative: number;
+  damage: number;
+}
+
+interface Setting {
+  key: string;
+  value: any;
 }
 
 interface InternalPlayersStore {
