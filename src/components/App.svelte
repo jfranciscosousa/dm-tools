@@ -1,42 +1,19 @@
 <script lang="ts">
-  import db from "root/lib/db";
+  import {
+    currentTurn$,
+    endBattle,
+    nextTurn,
+    roundNumber$,
+  } from "root/data/battle";
+  import { clearPlayers, players$ } from "root/data/players";
   import InitiativeInput from "./InitiativeInput.svelte";
   import PlayersList from "./PlayersList.svelte";
 
-  const currentTurn = db.useQuery(async () => {
-    const setting = await db.settings.where({ key: "currentTurn" }).first();
-
-    return setting?.value;
-  });
-  const roundNumber = db.useQuery(async () => {
-    const setting = await db.settings.where({ key: "roundNumber" }).first();
-
-    return setting?.value;
-  });
-  const players = db.$players;
-
-  async function nextTurn() {
-    if ($currentTurn === undefined || $currentTurn === null) {
-      db.settings.put({ key: "currentTurn", value: 0 });
-      db.settings.put({ key: "roundNumber", value: 1 });
-    } else db.settings.put({ key: "currentTurn", value: $currentTurn + 1 });
-
-    if ($currentTurn === $players.length - 1) {
-      db.settings.put({ key: "currentTurn", value: 0 });
-      db.settings.put({ key: "roundNumber", value: $roundNumber + 1 });
-    }
-  }
-
-  function endBattle() {
-    db.settings.put({ key: "currentTurn", value: undefined });
-    db.settings.put({ key: "roundNumber", value: undefined });
-  }
-
-  function handleReset() {
+  async function handleReset() {
     if (!window.confirm("Are you sure?")) return;
 
-    db.players.clear();
-    db.settings.clear();
+    await endBattle();
+    await clearPlayers();
   }
 </script>
 
@@ -84,7 +61,7 @@
   }
 </style>
 
-{#if $players}
+{#if $players$}
   <main>
     <nav>
       <div class="title-row">
@@ -93,7 +70,7 @@
         <button on:click="{handleReset}">Reset</button>
       </div>
 
-      {#if $currentTurn >= 0}Round number: {$roundNumber}{/if}
+      {#if $currentTurn$ >= 0}Round number: {$roundNumber$}{/if}
     </nav>
 
     <div class="players">
@@ -101,7 +78,7 @@
     </div>
 
     <div class="actions">
-      {#if $currentTurn >= 0}
+      {#if $currentTurn$ >= 0}
         <button on:click="{nextTurn}">Next turn</button>
 
         <button on:click="{endBattle}">End battle</button>

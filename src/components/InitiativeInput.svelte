@@ -1,5 +1,5 @@
 <script lang="ts">
-  import db from "root/lib/db";
+  import { addPlayer } from "root/data/players";
 
   let playerName = "";
   let initiative = "";
@@ -7,7 +7,7 @@
   $: valid = playerName !== "" && initiative !== "";
 
   async function handleSubmit() {
-    await db.players.add({
+    await addPlayer({
       name: playerName,
       initiative: Number(initiative),
       damage: 0,

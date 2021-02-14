@@ -4,6 +4,10 @@ yarn build
 yarn serve public &
 PID=$!
 
-yarn cypress run
+cleanup() {
+  kill $PID
+}
+trap cleanup EXIT
+trap cleanup ERR
 
-kill $PID
+yarn cypress run

@@ -1,22 +1,16 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import db from "root/lib/db";
+  import { deletePlayer, editPlayer, players$ } from "root/data/players";
+  import { currentTurn$ } from "root/data/battle";
+
   import TrashIcon from "./TrashIcon.svelte";
-
-  const players = db.$players;
-
-  const currentTurn = db.useQuery(async () => {
-    const setting = await db.settings.where({ key: "currentTurn" }).first();
-
-    return setting?.value;
-  });
 
   function handleDelete(id) {
     return () => {
       if (!window.confirm("Are you sure?")) return;
 
-      db.players.delete(id);
+      deletePlayer(id);
     };
   }
 
@@ -37,7 +31,7 @@
         damage -= Number(value);
       }
 
-      db.players.update(player.id, { damage });
+      editPlayer(player.id, { damage });
       event.target.value = "";
     };
   }
@@ -90,11 +84,11 @@
 </style>
 
 <ul>
-  {#each $players as player, index (player.id)}
+  {#each $players$ as player, index (player.id)}
     <li
       transition:fade|local="{{ duration: 150 }}"
       animate:flip
-      class:currentTurn="{index === $currentTurn}">
+      class:currentTurn="{index === $currentTurn$}">
       <p class="name">{player.initiative} - {player.name}</p>
       <p>{player.damage}</p>
 

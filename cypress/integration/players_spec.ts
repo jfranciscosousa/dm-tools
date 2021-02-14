@@ -1,4 +1,5 @@
-import db from "../../src/lib/db";
+import { addPlayer } from "../../src/data/players";
+import { nextTurn } from "../../src/data/battle";
 
 describe("Initiative Tracker", () => {
   beforeEach(() => {
@@ -116,10 +117,12 @@ describe("Initiative Tracker", () => {
   it("loads the data in the localStorage", () => {
     cy.visit("/", {
       onBeforeLoad: async (window) => {
-        await db.players.add({ name: "Fernando", initiative: 20 });
-        await db.players.add({ name: "Coiso", initiative: 10 });
-        await db.settings.add({ key: "currentTurn", value: 1 });
-        await db.settings.add({ key: "roundNumber", value: 2 });
+        await addPlayer({ name: "Fernando", initiative: 20 });
+        await addPlayer({ name: "Coiso", initiative: 10 });
+        await nextTurn();
+        await nextTurn();
+        await nextTurn();
+        await nextTurn();
       },
     });
 

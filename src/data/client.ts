@@ -7,8 +7,6 @@ export class MyAppDatabase extends Dexie {
 
   settings: Dexie.Table<Setting, string>;
 
-  $players: Readable<Player[]>;
-
   constructor() {
     super("MyDatabase");
 
@@ -19,10 +17,6 @@ export class MyAppDatabase extends Dexie {
 
     this.players = this.table("players");
     this.settings = this.table("settings");
-
-    this.$players = this.useQuery(() =>
-      this.players.toCollection().reverse().sortBy("initiative")
-    );
   }
 
   useQuery<T>(query: () => Promise<T>, defaultValue = undefined): Readable<T> {
@@ -36,6 +30,6 @@ export class MyAppDatabase extends Dexie {
   }
 }
 
-const db = new MyAppDatabase();
+const client = new MyAppDatabase();
 
-export default db;
+export default client;
