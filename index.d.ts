@@ -1,5 +1,5 @@
 interface Player {
-  id?: string;
+  id?: number;
   name: string;
   initiative: number;
   damage: number;

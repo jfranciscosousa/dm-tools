@@ -6,7 +6,7 @@
 
   import TrashIcon from "./TrashIcon.svelte";
 
-  function handleDelete(id) {
+  function handleDelete(id: number) {
     return () => {
       if (!window.confirm("Are you sure?")) return;
 
@@ -14,9 +14,10 @@
     };
   }
 
-  function handleDamage(player) {
-    return (event) => {
-      const input = event.target.value;
+  function handleDamage(player: Player) {
+    return (event: Event) => {
+      const inputEl = <HTMLInputElement>event.target;
+      const input = inputEl.value;
 
       if (!input.length) return;
 
@@ -32,7 +33,7 @@
       }
 
       editPlayer(player.id, { damage });
-      event.target.value = "";
+      inputEl.value = "";
     };
   }
 </script>

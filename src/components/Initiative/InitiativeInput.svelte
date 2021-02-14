@@ -3,7 +3,7 @@
 
   let playerName = "";
   let initiative = "";
-  let inputRef;
+  let inputRef: HTMLInputElement;
   $: valid = playerName !== "" && initiative !== "";
 
   async function handleSubmit() {
