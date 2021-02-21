@@ -38,7 +38,7 @@
   }
 </script>
 
-<ul class="flex flex-col">
+<ul class="flex flex-col space-y-6">
   {#each $players$ as player, index (player.id)}
     <li
       class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 bg-gray-700 rounded shadow-xl"

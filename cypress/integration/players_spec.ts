@@ -13,7 +13,7 @@ describe("Initiative Tracker", () => {
   }
 
   it("enters a player into the initiative list", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
 
@@ -21,7 +21,7 @@ describe("Initiative Tracker", () => {
   });
 
   it("sorts players based on initiative", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
     insertPlayer("Barbarian", "18");
@@ -34,15 +34,15 @@ describe("Initiative Tracker", () => {
       });
 
       expect(players).to.eql([
-        "18 - Barbarian 0",
-        "12 - Warrior Elf 420 0",
-        "8 - Ranger 0",
+        "18 - Barbarian Damage: 0",
+        "12 - Warrior Elf 420 Damage: 0",
+        "8 - Ranger Damage: 0",
       ]);
     });
   });
 
   it("deletes a player from the list", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
     cy.get("svg").click();
@@ -52,7 +52,7 @@ describe("Initiative Tracker", () => {
   });
 
   it("resets the player list", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
     insertPlayer("Barbarian", "18");
@@ -67,7 +67,7 @@ describe("Initiative Tracker", () => {
   });
 
   it("starts a battle at round1 1", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
     insertPlayer("Barbarian", "128");
@@ -82,7 +82,7 @@ describe("Initiative Tracker", () => {
   });
 
   it("changes the active player after ending a turn", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
     insertPlayer("Barbarian", "128");
@@ -99,7 +99,7 @@ describe("Initiative Tracker", () => {
   });
 
   it("moves on to the next round", () => {
-    cy.visit("/");
+    cy.visit("/initiative");
 
     insertPlayer("Warrior Elf 420", "12");
     insertPlayer("Barbarian", "128");
@@ -115,7 +115,7 @@ describe("Initiative Tracker", () => {
   });
 
   it("loads the data in the localStorage", () => {
-    cy.visit("/", {
+    cy.visit("/initiative", {
       onBeforeLoad: async (window) => {
         await addPlayer({ name: "Fernando", initiative: 20 });
         await addPlayer({ name: "Coiso", initiative: 10 });

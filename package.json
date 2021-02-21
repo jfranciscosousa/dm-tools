@@ -5,6 +5,9 @@
     "dev": "NODE_ENV=development snowpack dev",
     "prettier": "prettier --write src/**/*",
     "prettier-check": "prettier --check src/**/*",
+    "serve": "serve -s public",
+    "pretest": "yarn build",
+    "test": "start-server-and-test 'yarn serve' 'http://localhost:5000' 'yarn cypress run'",
     "lint": "svelte-check",
     "lint-styles": "stylelint \"src/**/*.css\" \"src/**/*.svelte\""
   },
@@ -13,8 +16,7 @@
     "dexie-observable": "^3.0.0-beta.10",
     "svelte": "^3.32.3",
     "svelte-loadable": "^1.5.1",
-    "svelte-routing": "^1.5.0",
-    "water.css": "^2.0.0"
+    "svelte-routing": "^1.5.0"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",
@@ -36,6 +38,7 @@
     "prettier-plugin-svelte": "^2.1.6",
     "serve": "^11.3.2",
     "snowpack": "^3.0.11",
+    "start-server-and-test": "^1.12.0",
     "stylelint": "^13.11.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-order": "^4.1.0",

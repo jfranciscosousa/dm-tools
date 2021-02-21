@@ -1,13 +1,3 @@
 #!/bin/sh
 
-yarn build
-yarn serve public &
-PID=$!
-
-cleanup() {
-  kill $PID
-}
-trap cleanup EXIT
-trap cleanup ERR
-
-yarn cypress run
+yarn test
