@@ -38,68 +38,29 @@
   }
 </script>
 
-<style>
-  ul {
-    width: 100%;
-    margin: 2rem auto;
-  }
-
-  li {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
-
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-
-  li:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-
-  .name {
-    width: 12rem;
-  }
-
-  .currentTurn {
-    background-color: var(--selection);
-    border: 1px solid var(--selection);
-  }
-
-  button {
-    display: inline;
-    padding: 0;
-    margin: 0;
-
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .actions {
-    display: flex;
-    gap: 8px;
-  }
-</style>
-
-<ul>
+<ul class="flex flex-col">
   {#each $players$ as player, index (player.id)}
     <li
+      class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 bg-gray-700 rounded shadow-xl"
       transition:fade|local="{{ duration: 150 }}"
       animate:flip
-      class:currentTurn="{index === $currentTurn$}">
+      class:currentTurn="{index === $currentTurn$}"
+    >
       <p class="name">{player.initiative} - {player.name}</p>
 
-      <p>Damage: {player.damage}</p>
+      <div class="flex items-center sm:justify-between sm:mt-4">
+        <p>Damage: {player.damage}</p>
 
-      <div class="actions">
-        <input on:change="{handleDamage(player)}" size="6" />
+        <div class="flex space-x-4 ml-4">
+          <input class="u-input" on:change="{handleDamage(player)}" size="6" />
 
-        <button on:click="{handleDelete(player.id)}">
-          <TrashIcon />
-        </button>
+          <button
+            class="sm:absolute sm:right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2"
+            on:click="{handleDelete(player.id)}"
+          >
+            <TrashIcon />
+          </button>
+        </div>
       </div>
     </li>
   {/each}

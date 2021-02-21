@@ -19,48 +19,30 @@
   }
 </script>
 
-<style>
-  form {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 100%;
-
-    margin-top: auto;
-  }
-
-  @media (max-width: 600px) {
-    form {
-      flex-wrap: wrap;
-    }
-  }
-
-  label {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .playerName {
-    flex-grow: 1;
-    margin-right: 1rem;
-  }
-
-  .initiative {
-    width: 80px;
-  }
-</style>
-
-<form on:submit|preventDefault="{handleSubmit}" autocomplete="off">
-  <label class="playerName">
+<form
+  class="flex items-end space-x-4 sm:flex-wrap"
+  on:submit|preventDefault="{handleSubmit}"
+  autocomplete="off"
+>
+  <label class="flex-grow flex flex-col">
     Player
-    <input name="playerName" bind:value="{playerName}" bind:this="{inputRef}" />
+    <input
+      class="u-input w-full"
+      name="playerName"
+      bind:value="{playerName}"
+      bind:this="{inputRef}"
+    />
   </label>
 
-  <label class="initiative">
+  <label class="flex flex-col w-20">
     Initiative
-    <input name="initiative" type="number" bind:value="{initiative}" />
+    <input
+      class="u-input"
+      name="initiative"
+      type="number"
+      bind:value="{initiative}"
+    />
   </label>
 
-  <div><button type="submit" disabled="{!valid}">Add</button></div>
+  <button class="u-button" type="submit" disabled="{!valid}">Add</button>
 </form>
