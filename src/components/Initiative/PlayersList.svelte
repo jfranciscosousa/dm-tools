@@ -91,7 +91,8 @@
       animate:flip
       class:currentTurn="{index === $currentTurn$}">
       <p class="name">{player.initiative} - {player.name}</p>
-      <p>{player.damage}</p>
+
+      <p>Damage: {player.damage}</p>
 
       <div class="actions">
         <input on:change="{handleDamage(player)}" size="6" />

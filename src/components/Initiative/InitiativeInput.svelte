@@ -51,7 +51,7 @@
   }
 </style>
 
-<form on:submit|preventDefault="{handleSubmit}">
+<form on:submit|preventDefault="{handleSubmit}" autocomplete="off">
   <label class="playerName">
     Player
     <input name="playerName" bind:value="{playerName}" bind:this="{inputRef}" />
