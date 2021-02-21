@@ -21,3 +21,5 @@ interface PlayersStore {
   currentTurn?: number;
   roundNumber: number;
 }
+
+declare module "svelte-loadable";
