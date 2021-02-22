@@ -1,27 +1,24 @@
 import client from "./client";
-import { players } from "./players";
+import { getPlayers } from "./players";
 
 const CURRENT_TURN = "currentTurn";
 const ROUND_NUMBER = "roundNumber";
 
-export async function currentTurn(): Promise<number> {
+export async function getCurrentTurn(): Promise<number> {
   const setting = await client.settings.where({ key: CURRENT_TURN }).first();
 
   return setting?.value;
 }
 
-export async function roundNumber(): Promise<number> {
+export async function getRoundNumber(): Promise<number> {
   const setting = await client.settings.where({ key: ROUND_NUMBER }).first();
 
   return setting?.value;
 }
 
-export const currentTurn$ = client.useQuery(currentTurn);
-export const roundNumber$ = client.useQuery(roundNumber);
-
 export async function nextTurn(): Promise<void> {
-  const currentTurnVal = await currentTurn();
-  const roundNumberVal = await roundNumber();
+  const currentTurnVal = await getCurrentTurn();
+  const roundNumberVal = await getRoundNumber();
 
   if (currentTurnVal === undefined || currentTurnVal === null) {
     await client.settings.put({ key: CURRENT_TURN, value: 0 });
@@ -33,7 +30,7 @@ export async function nextTurn(): Promise<void> {
     });
   }
 
-  if (currentTurnVal === (await players()).length - 1) {
+  if (currentTurnVal === (await getPlayers()).length - 1) {
     await client.settings.put({ key: CURRENT_TURN, value: 0 });
     await client.settings.put({
       key: ROUND_NUMBER,

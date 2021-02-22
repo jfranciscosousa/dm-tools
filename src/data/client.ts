@@ -1,10 +1,8 @@
 import Dexie from "dexie";
 import "dexie-observable";
-import { Readable, readable } from "svelte/store";
 
 export class MyAppDatabase extends Dexie {
   players: Dexie.Table<Player, number>;
-
   settings: Dexie.Table<Setting, string>;
 
   constructor() {
@@ -17,16 +15,6 @@ export class MyAppDatabase extends Dexie {
 
     this.players = this.table("players");
     this.settings = this.table("settings");
-  }
-
-  useQuery<T>(query: () => Promise<T>, defaultValue = undefined): Readable<T> {
-    return readable(defaultValue, (set) => {
-      query().then((value) => set(value));
-
-      this.on("changes", async () => {
-        set(await query());
-      });
-    });
   }
 }
 

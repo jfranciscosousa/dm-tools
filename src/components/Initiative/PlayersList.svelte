@@ -1,10 +1,13 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import { deletePlayer, editPlayer, players$ } from "root/data/players";
-  import { currentTurn$ } from "root/data/battle";
+  import { deletePlayer, editPlayer, getPlayers } from "root/data/players";
+  import liveQuery from "root/data/liveQuery";
+  import { getCurrentTurn } from "root/data/battle";
+  import IconTrash from "root/icons/IconTrash.svelte";
 
-  import TrashIcon from "./TrashIcon.svelte";
+  const players = liveQuery(() => getPlayers());
+  const currentTurn = liveQuery(() => getCurrentTurn());
 
   function handleDelete(id: number) {
     return () => {
@@ -38,31 +41,37 @@
   }
 </script>
 
-<ul class="flex flex-col space-y-6">
-  {#each $players$ as player, index (player.id)}
-    <li
-      class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl"
-      transition:fade|local="{{ duration: 150 }}"
-      animate:flip
-      class:bg-gray-700="{index !== $currentTurn$}"
-      class:bg-blue-700="{index === $currentTurn$}"
-    >
-      <p class="name">{player.initiative} - {player.name}</p>
+{#if $players}
+  <ul class="flex flex-col space-y-6">
+    {#each $players as player, index (player.id)}
+      <li
+        class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl"
+        transition:fade|local="{{ duration: 150 }}"
+        animate:flip
+        class:bg-gray-700="{index !== $currentTurn}"
+        class:bg-blue-700="{index === $currentTurn}"
+      >
+        <p class="name">{player.initiative} - {player.name}</p>
 
-      <div class="flex items-center sm:justify-between sm:mt-4">
-        <p>Damage: {player.damage}</p>
+        <div class="flex items-center sm:justify-between sm:mt-4">
+          <p>Damage: {player.damage}</p>
 
-        <div class="flex space-x-4 ml-4">
-          <input class="u-input" on:change="{handleDamage(player)}" size="6" />
+          <div class="flex space-x-4 ml-4">
+            <input
+              class="u-input"
+              on:change="{handleDamage(player)}"
+              size="6"
+            />
 
-          <button
-            class="sm:absolute sm:right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2"
-            on:click="{handleDelete(player.id)}"
-          >
-            <TrashIcon />
-          </button>
+            <button
+              class="sm:absolute sm:right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2"
+              on:click="{handleDelete(player.id)}"
+            >
+              <IconTrash />
+            </button>
+          </div>
         </div>
-      </div>
-    </li>
-  {/each}
-</ul>
+      </li>
+    {/each}
+  </ul>
+{/if}

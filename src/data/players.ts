@@ -1,10 +1,8 @@
 import client from "./client";
 
-export function players(): Promise<Player[]> {
+export function getPlayers(): Promise<Player[]> {
   return client.players.toCollection().reverse().sortBy("initiative");
 }
-
-export const players$ = client.useQuery(players);
 
 export async function addPlayer(player: Player): Promise<void> {
   await client.players.add(player);
