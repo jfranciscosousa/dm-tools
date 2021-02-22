@@ -6,7 +6,7 @@
     roundNumber$,
   } from "root/data/battle";
   import { clearPlayers, players$ } from "root/data/players";
-  import InitiativeInput from "./InitiativeInput.svelte";
+  import Input from "./Input.svelte";
   import PlayersList from "./PlayersList.svelte";
 
   async function handleReset() {
@@ -42,7 +42,7 @@
         >
       {:else}
         <div class="w-full">
-          <InitiativeInput />
+          <Input />
         </div>
 
         <button class="u-button mt-4" on:click="{nextTurn}">Start battle</button

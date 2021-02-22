@@ -22,4 +22,5 @@ interface PlayersStore {
   roundNumber: number;
 }
 
+declare module "svelte-routing";
 declare module "svelte-loadable";
