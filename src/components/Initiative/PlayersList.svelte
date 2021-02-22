@@ -41,10 +41,11 @@
 <ul class="flex flex-col space-y-6">
   {#each $players$ as player, index (player.id)}
     <li
-      class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 bg-gray-700 rounded shadow-xl"
+      class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl"
       transition:fade|local="{{ duration: 150 }}"
       animate:flip
-      class:currentTurn="{index === $currentTurn$}"
+      class:bg-gray-700="{index !== $currentTurn$}"
+      class:bg-blue-700="{index === $currentTurn$}"
     >
       <p class="name">{player.initiative} - {player.name}</p>
 

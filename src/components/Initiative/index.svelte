@@ -21,7 +21,7 @@
   <main class="flex flex-col">
     <nav>
       <div class="flex justify-between">
-        <h1>Initiative Tracker</h1>
+        <h1 class="text-2xl">Initiative Tracker</h1>
 
         <button class="u-button" on:click="{handleReset}">Reset</button>
       </div>

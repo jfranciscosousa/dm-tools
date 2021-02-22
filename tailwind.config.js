@@ -17,6 +17,12 @@ module.exports = {
       sm: { max: "639px" },
     },
 
+    fontFamily: {
+      sans: ["Arial", "ui-sans-serif", "system-ui"],
+      serif: ["Georgia", "ui-serif"],
+      mono: ["SFMono-Regular", "ui-monospace"],
+    },
+
     extend: {
       colors: {
         accent: "var(--accent)",
@@ -25,10 +31,7 @@ module.exports = {
         "wash-light": "var(--wash-light)",
         "wash-dark": "var(--wash-dark)",
       },
-      fontFamily: {
-        sans: ["Verdana", "ui-sans-serif", "system-ui"],
-        serif: ["Georgia", "ui-sans-serif", "system-ui"],
-      },
+
       typography: (theme) => ({
         DEFAULT: {
           css: [
