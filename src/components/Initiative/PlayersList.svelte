@@ -45,11 +45,10 @@
   <ul class="flex flex-col space-y-6">
     {#each $players as player, index (player.id)}
       <li
-        class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl"
+        class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl bg-gray-700"
         transition:fade|local="{{ duration: 150 }}"
         animate:flip
-        class:bg-gray-700="{index !== $currentTurn}"
-        class:bg-blue-700="{index === $currentTurn}"
+        class:selected="{index === $currentTurn}"
       >
         <p class="name">{player.initiative} - {player.name}</p>
 
@@ -75,3 +74,9 @@
     {/each}
   </ul>
 {/if}
+
+<style>
+  .selected {
+    @apply bg-blue-700;
+  }
+</style>
