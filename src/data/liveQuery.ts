@@ -9,7 +9,6 @@ export default function liveQuery<T>(
     query().then((value) => set(value));
 
     client.on("changes", async (changes) => {
-      console.log(changes);
       set(await query());
     });
   });

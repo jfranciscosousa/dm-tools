@@ -48,7 +48,7 @@
         class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl bg-gray-700"
         transition:fade|local="{{ duration: 150 }}"
         animate:flip
-        class:selected="{index === $currentTurn}"
+        class:currentTurn="{index === $currentTurn}"
       >
         <p class="name">{player.initiative} - {player.name}</p>
 
@@ -76,7 +76,7 @@
 {/if}
 
 <style>
-  .selected {
+  .currentTurn {
     @apply bg-blue-700;
   }
 </style>
