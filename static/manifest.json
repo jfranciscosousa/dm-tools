@@ -1,0 +1,17 @@
+{
+  "short_name": "DM Tools",
+  "name": "DM Tools",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "#1F2937",
+  "theme_color": "#1F2937",
+  "display": "standalone",
+  "description": "Simple tools for DMs. Please don't sue."
+}
