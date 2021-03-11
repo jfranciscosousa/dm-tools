@@ -5,9 +5,9 @@
   import Input from "./Input.svelte";
   import PlayersList from "./PlayersList.svelte";
 
-  const players = liveQuery(() => getPlayers());
-  const currentTurn = liveQuery(() => getCurrentTurn());
-  const roundNumber = liveQuery(() => getRoundNumber());
+  const players = liveQuery("players", () => getPlayers());
+  const currentTurn = liveQuery("currentTurn", () => getCurrentTurn());
+  const roundNumber = liveQuery("roundNumber", () => getRoundNumber());
 
   async function handleReset() {
     if (!window.confirm("Are you sure?")) return;

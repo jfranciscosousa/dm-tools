@@ -6,8 +6,8 @@
   import { getCurrentTurn } from "root/data/battle";
   import IconTrash from "root/icons/IconTrash.svelte";
 
-  const players = liveQuery(() => getPlayers());
-  const currentTurn = liveQuery(() => getCurrentTurn());
+  const players = liveQuery("players", () => getPlayers());
+  const currentTurn = liveQuery("currentTurn", () => getCurrentTurn());
 
   function handleDelete(id: number) {
     return () => {
