@@ -10,21 +10,6 @@ module.exports = {
     "@snowpack/plugin-svelte",
     "@snowpack/plugin-dotenv",
     "@snowpack/plugin-typescript",
-    [
-      "@snowpack/plugin-webpack",
-      {
-        extendConfig: (config) => ({
-          ...config,
-          optimization: {
-            ...config.optimization,
-
-            splitChunks: {
-              chunks: "all",
-            },
-          },
-        }),
-      },
-    ],
   ],
   devOptions: {
     open: "none",
@@ -34,5 +19,11 @@ module.exports = {
   },
   alias: {
     root: "./src",
+  },
+  optimize: {
+    bundle: true,
+    minify: true,
+    splitting: true,
+    target: "es2018",
   },
 };
