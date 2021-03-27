@@ -20,8 +20,12 @@
     @apply px-4 py-2 bg-blue-500 rounded text-white;
   }
 
-  .u-button:hover {
+  .u-button:hover:not(:disabled) {
     @apply bg-blue-400;
+  }
+
+  .u-button:disabled {
+    @apply bg-gray-400 cursor-not-allowed;
   }
 
   .u-input {
