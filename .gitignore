@@ -1,5 +1,8 @@
-/node_modules/
-public/
 .DS_Store
-cypress/screenshots
+node_modules
+/build
+/.svelte-kit
+/package
+.env
 cypress/videos
+cypress/screenshots

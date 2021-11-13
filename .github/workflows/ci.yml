@@ -20,15 +20,14 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v2
         with:
-            path: node_modules
-            key: ${{ runner.os }}-build-node_modules-${{ hashFiles('**/yarn.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-node-
+          path: node_modules
+          key: ${{ runner.os }}-build-node_modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: yarn install, lint and build
         run: |
           yarn
           yarn lint
-          yarn lint-styles
           yarn cypress install
           bin/test
