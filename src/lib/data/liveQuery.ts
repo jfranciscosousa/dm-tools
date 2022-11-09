@@ -18,7 +18,7 @@ export default function liveQuery<T>(
       CACHE[queryKey] = value;
     });
 
-    client.on("changes", async (changes) => {
+    client.on("changes", async () => {
       set(await query());
     });
   });

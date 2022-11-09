@@ -5,11 +5,11 @@ export function getPlayers(): Promise<Player[]> {
   return client.players.toCollection().reverse().sortBy("initiative");
 }
 
-export async function addPlayer(player: Player): Promise<void> {
-  await client.players.add(player);
+export async function addPlayer(player: Omit<Player, "id">): Promise<void> {
+  await client.players.add(player as Player);
 }
 
-export async function editPlayer(id: number, changes: any): Promise<void> {
+export async function editPlayer(id: number, changes: Partial<Omit<Player, "id">>): Promise<void> {
   await client.players.update(id, changes);
 }
 

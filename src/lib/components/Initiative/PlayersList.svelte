@@ -7,8 +7,8 @@
   import IconTrash from "$lib/icons/IconTrash.svelte";
   import type { Player } from "$lib/types";
 
-  const players = liveQuery("players", () => getPlayers());
-  const currentTurn = liveQuery("currentTurn", () => getCurrentTurn());
+  const players = liveQuery("players", getPlayers);
+  const currentTurn = liveQuery("currentTurn", getCurrentTurn);
 
   function handleDelete(id: number) {
     return () => {
