@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { endBattle, getCurrentTurn, getRoundNumber, nextTurn } from "$lib/data/battle";
   import liveQuery from "$lib/data/liveQuery";
-  import { clearPlayers, getPlayers } from "$lib/data/players";
+  import { endBattle, getCurrentTurn, getRoundNumber, nextTurn } from "./battle";
+  import { clearPlayers, getPlayers } from "./players";
   import Input from "./Input.svelte";
   import PlayersList from "./PlayersList.svelte";
 

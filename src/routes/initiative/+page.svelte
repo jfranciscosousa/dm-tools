@@ -6,4 +6,4 @@
   <title>Initiative Tracker - DM Tools</title>
 </svelte:head>
 
-<ClientOnly impFn={() => import("$lib/components/Initiative/index.svelte")} />
+<ClientOnly impFn={() => import("$lib/modules/Initiative/Initiative.svelte")} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { addPlayer } from "$lib/data/players";
+  import { addPlayer } from "./players";
 
   let playerName = "";
   let initiative = "";

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { flip } from "svelte/animate";
-  import { fade } from "svelte/transition";
-  import { deletePlayer, editPlayer, getPlayers } from "$lib/data/players";
   import liveQuery from "$lib/data/liveQuery";
-  import { getCurrentTurn } from "$lib/data/battle";
   import IconTrash from "$lib/icons/IconTrash.svelte";
   import type { Player } from "$lib/types";
+  import { flip } from "svelte/animate";
+  import { fade } from "svelte/transition";
+  import { getCurrentTurn } from "./battle";
+  import { deletePlayer, editPlayer, getPlayers } from "./players";
 
   const players = liveQuery("players", getPlayers);
   const currentTurn = liveQuery("currentTurn", getCurrentTurn);

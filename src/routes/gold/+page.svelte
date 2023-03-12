@@ -1,5 +1,5 @@
 <script>
-  import Gold from "$lib/components/Gold/Gold.svelte";
+  import Gold from "$lib/modules/Gold/Gold.svelte";
 </script>
 
 <Gold />

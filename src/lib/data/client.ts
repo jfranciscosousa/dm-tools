@@ -7,7 +7,7 @@ export class MyAppDatabase extends Dexie {
   settings: Dexie.Table<Setting, string>;
 
   constructor() {
-    super("DMToolsDB");
+    super("DMToolsInitiative");
 
     this.version(1).stores({
       players: "++id, name, initiative, damage",

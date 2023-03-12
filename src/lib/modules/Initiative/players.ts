@@ -1,5 +1,5 @@
+import client from "$lib/data/client";
 import type { Player } from "$lib/types";
-import client from "./client";
 
 export function getPlayers(): Promise<Player[]> {
   return client.players.toCollection().reverse().sortBy("initiative");

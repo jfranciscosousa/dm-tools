@@ -1,4 +1,4 @@
-import client from "./client";
+import client from "$lib/data/client";
 import { getPlayers } from "./players";
 
 const CURRENT_TURN = "currentTurn";

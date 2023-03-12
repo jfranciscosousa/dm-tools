@@ -1,14 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:4173",
@@ -21,10 +12,21 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"]
       }
-    }
+    },
+    ...(process.env.CI
+      ? [
+          {
+            name: "safari",
+            use: {
+              ...devices["Desktop Safari"]
+            }
+          },
+          { name: "firefox", use: { ...devices["Desktop Firefox"] } }
+        ]
+      : [])
   ],
   webServer: {
-    command: "npm run build && npm run preview",
+    command: "npm run build && npm run preview -- --host 0.0.0.0",
     url: "http://127.0.0.1:4173"
   }
 });

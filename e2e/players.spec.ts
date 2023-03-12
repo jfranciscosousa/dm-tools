@@ -104,10 +104,9 @@ test("changes the active player after ending a turn", async ({ screen, page }) =
   await (await screen.findByText("Next turn")).click();
 
   expect(await screen.findByText("Round number: 1")).toHaveCount(1);
-  expect(page.locator('[data-currentTurn=false]:has-text("10 - Barbarian Damage: 0")')).toHaveCount(
-    1
-  );
-  expect(page.locator('[data-currentTurn=true]:has-text("20 - Warrior Damage: 0")')).toHaveCount(1);
+
+  await page.waitForSelector('[data-currentTurn=false]:has-text("20 - Warrior Damage: 0")');
+  await page.waitForSelector('[data-currentTurn=true]:has-text("10 - Barbarian Damage: 0")');
 });
 
 test("goes to the next round", async ({ screen, page }) => {
