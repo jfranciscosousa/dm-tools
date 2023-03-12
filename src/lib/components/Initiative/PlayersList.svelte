@@ -50,6 +50,7 @@
         transition:fade|local={{ duration: 150 }}
         animate:flip
         class:currentTurn={index === $currentTurn}
+        data-currentTurn={index === $currentTurn}
       >
         <p class="name">{player.initiative} - {player.name}</p>
 
@@ -62,6 +63,7 @@
             <button
               class="sm:absolute sm:right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2"
               on:click={handleDelete(player.id)}
+              aria-label="Delete {player.name}"
             >
               <IconTrash />
             </button>
