@@ -17,5 +17,8 @@ test("enters a player into the initiative list", async ({ screen, page }) => {
   await page.getByLabel("Electrum").fill("115");
   await page.getByLabel("Platinum").fill("115");
 
-  expect(await screen.findByText("Total: 133 platinum | 5 gold | 1 silver | 5 copper"));
+  expect(await screen.findByText("Total: 133 platinum | 5 gold | 1 silver | 5 copper")).toHaveCount(
+    1
+  );
+  expect(await screen.findByText("Total in copper: 133515")).toHaveCount(1);
 });

@@ -8,6 +8,14 @@
   let electrum = 0;
   let platinum = 0;
 
+  function reset() {
+    copper = 0;
+    silver = 0;
+    gold = 0;
+    electrum = 0;
+    platinum = 0;
+  }
+
   function simplify(
     copper: number,
     silver: number,
@@ -25,10 +33,13 @@
     const [total = "", decimal = ""] = valueInPlat.toString().split(".");
 
     return {
-      platinum: Number(total),
-      gold: Number(decimal[0] || 0),
-      silver: Number(decimal[1] || 0),
-      copper: Number(decimal[2] || 0)
+      simplified: {
+        platinum: Number(total),
+        gold: Number(decimal[0] || 0),
+        silver: Number(decimal[1] || 0),
+        copper: Number(decimal[2] || 0)
+      },
+      totalInCopper: Number(valueInPlat) * 1000
     };
   }
 
@@ -44,9 +55,13 @@
     <Input name="gold" label="Gold" bind:value={gold} />
     <Input name="electrum" label="Electrum" bind:value={electrum} />
     <Input name="platinum" label="Platinum" bind:value={platinum} />
+    <button class="u-button mt-auto" on:click={reset}>Reset</button>
   </div>
 
   <div class="mt-8">
-    Total: {total.platinum} platinum | {total.gold} gold | {total.silver} silver | {total.copper} copper
+    Total: {total.simplified.platinum} platinum | {total.simplified.gold} gold | {total.simplified
+      .silver} silver | {total.simplified.copper} copper
   </div>
+
+  <div class="mt-2">Total in copper: {total.totalInCopper}</div>
 </main>
