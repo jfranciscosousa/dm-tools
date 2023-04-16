@@ -20,16 +20,6 @@
   }
 }
 
-@layer components {
-  .u-button {
-    @apply px-4 py-2 bg-blue-500 rounded text-white;
-  }
-
-  .u-button:hover {
-    @apply bg-blue-400;
-  }
-
-  .u-input {
-    @apply px-1 py-1 text-white bg-gray-600 rounded;
-  }
+.btn {
+  animation: none;
 }

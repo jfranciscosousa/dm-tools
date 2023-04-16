@@ -1,27 +1,27 @@
 <!-- @hmr:keep-all -->
 <script lang="ts">
-  import Input from "./Input.svelte";
+  import Input from "$lib/components/Input.svelte";
 
-  let copper = 0;
-  let silver = 0;
-  let gold = 0;
-  let electrum = 0;
-  let platinum = 0;
+  let copper = "0";
+  let silver = "0";
+  let gold = "0";
+  let electrum = "0";
+  let platinum = "0";
 
   function reset() {
-    copper = 0;
-    silver = 0;
-    gold = 0;
-    electrum = 0;
-    platinum = 0;
+    copper = "0";
+    silver = "0";
+    gold = "0";
+    electrum = "0";
+    platinum = "0";
   }
 
   function simplify(
-    copper: number,
-    silver: number,
-    gold: number,
-    electrum: number,
-    platinum: number
+    copper: string,
+    silver: string,
+    gold: string,
+    electrum: string,
+    platinum: string
   ) {
     const valueInGold =
       Number(copper) / 100 +
@@ -46,7 +46,7 @@
   $: total = simplify(copper, silver, gold, electrum, platinum);
 </script>
 
-<main class="p-24 ">
+<main class="p-24">
   <h1 class="mb-40 text-3xl">Gold Simplifier</h1>
 
   <div class="grid grid-cols-2 gap-3">
@@ -55,7 +55,7 @@
     <Input name="gold" label="Gold" bind:value={gold} />
     <Input name="electrum" label="Electrum" bind:value={electrum} />
     <Input name="platinum" label="Platinum" bind:value={platinum} />
-    <button class="u-button mt-auto" on:click={reset}>Reset</button>
+    <button class="btn btn-error mt-auto" on:click={reset}>Reset</button>
   </div>
 
   <div class="mt-8">

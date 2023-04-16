@@ -1,9 +1,10 @@
 <script lang="ts">
+  import Input from "$lib/components/Input.svelte";
   import { addPlayer } from "./players";
 
   let playerName = "";
   let initiative = "";
-  let inputRef: HTMLInputElement;
+  let inputRef: Input;
   $: valid = playerName !== "" && initiative !== "";
 
   async function handleSubmit() {
@@ -24,15 +25,13 @@
   on:submit|preventDefault={handleSubmit}
   autocomplete="off"
 >
-  <label class="flex-grow flex flex-col">
-    Player
-    <input class="u-input w-full" name="playerName" bind:value={playerName} bind:this={inputRef} />
-  </label>
+  <div class="flex-grow">
+    <Input label="Player" name="playerName" bind:value={playerName} bind:this={inputRef} />
+  </div>
 
-  <label class="flex flex-col w-20">
-    Initiative
-    <input class="u-input" name="initiative" type="number" bind:value={initiative} />
-  </label>
+  <div class="w-20">
+    <Input label="Initiative" name="initiative" type="number" bind:value={initiative} />
+  </div>
 
-  <button class="u-button" type="submit" disabled={!valid}>Add</button>
+  <button class="btn btn-primary" type="submit" disabled={!valid}>Add</button>
 </form>
