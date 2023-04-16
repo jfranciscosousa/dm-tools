@@ -27,7 +27,7 @@ export const UNIT_TYPES = {
     costModifier: 1.5
   },
   levies: {
-    label: "Flying",
+    label: "Levies",
     attack: 0,
     power: 0,
     defense: 0,
