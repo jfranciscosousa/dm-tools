@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-  import Input from "$lib/components/Input.svelte";
   import NpcDescription from "$lib/modules/Npc/NpcDescription.svelte";
   import NpcForm from "$lib/modules/Npc/NpcForm.svelte";
   import type { ActionData } from "./$types";
