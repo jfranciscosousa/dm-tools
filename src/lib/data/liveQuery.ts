@@ -2,15 +2,15 @@ import { readable } from "svelte/store";
 import type { Readable } from "svelte/store";
 import client from "./client";
 
-const CACHE = {};
+const CACHE: Record<string, unknown> = {};
 
 export default function liveQuery<T>(
   queryKey: string,
   query: () => Promise<T>,
-  defaultValue = undefined
+  defaultValue?: T
 ): Readable<T> {
   return readable(defaultValue, (set) => {
-    if (CACHE[queryKey]) set(CACHE[queryKey]);
+    if (CACHE[queryKey]) set(CACHE[queryKey] as T);
 
     query().then((value) => {
       set(value);
