@@ -11,5 +11,8 @@
     <li class="contents">
       <a class="btn btn-primary w-48 text-center" href="/warfare">Warfare</a>
     </li>
+    <li class="contents">
+      <a class="btn btn-primary w-48 text-center" href="/npc">NPC generator</a>
+    </li>
   </ul>
 </main>
