@@ -44,3 +44,5 @@ jobs:
           pnpm playwright install-deps
           pnpm playwright install
           CI=true pnpm test
+        env:
+          OPENAI_KEY: foobar
