@@ -17,7 +17,7 @@
     use:enhance={() => {
       loading = true;
 
-      return async ({ result, update }) => {
+      return async ({ update }) => {
         update();
         loading = false;
       };

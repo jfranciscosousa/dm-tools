@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, type ComponentType } from "svelte";
 
-  export let impFn: () => Promise<any>;
-  let component: any;
+  export let impFn: () => Promise<{ default: ComponentType }>;
+  let component: ComponentType;
 
   onMount(async () => {
     component = (await impFn()).default;
