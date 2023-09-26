@@ -5,6 +5,7 @@
     label: string;
     value: string;
     name: string;
+    loading?: boolean;
   }
 
   export let value: string;

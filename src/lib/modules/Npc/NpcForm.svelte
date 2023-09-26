@@ -3,8 +3,7 @@
   import Input from "$lib/components/Input.svelte";
 
   export let prompt: string;
-
-  let loading = false;
+  export let loading = false;
 </script>
 
 <form

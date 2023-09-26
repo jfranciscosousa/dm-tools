@@ -5,14 +5,14 @@
 
   export let form: ActionData | undefined;
 
-  let loading = false;
+  let loading: boolean;
   let prompt = form?.prompt || "";
 </script>
 
 <main class="p-24">
   <h1 class="mb-8 text-3xl">NPC generator</h1>
 
-  <NpcForm {prompt} />
+  <NpcForm {prompt} bind:loading />
 
   {#if form?.data && !loading}
     <NpcDescription npc={form?.data} />

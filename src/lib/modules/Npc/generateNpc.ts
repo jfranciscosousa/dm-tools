@@ -17,7 +17,10 @@ const npcSchema = z.object({
   personalityTraits: z.string().describe("Personality traits"),
   ideals: z.string().describe("Ideals"),
   bonds: z.string().describe("Bonds"),
-  flaws: z.string().describe("Flaws")
+  flaws: z.string().describe("Flaws"),
+  roleplayingTips: z
+    .string()
+    .describe("Tips to roleplay this character. Maneirisms, manner of speech, etc")
 });
 
 export type Npc = z.infer<typeof npcSchema>;

@@ -18,7 +18,7 @@
 </script>
 
 {#if $players}
-  <main class="flex flex-col max-h-screen">
+  <main class="flex flex-col max-h-screen h-full p-24">
     <nav>
       <div class="flex justify-between">
         <h1 class="text-2xl">Initiative Tracker</h1>

@@ -1,4 +1,4 @@
-<main class="flex flex-col items-center">
+<main class="flex flex-col items-center h-full pt-24">
   <h1 class="mb-40 text-3xl">DM tools</h1>
 
   <ul class="flex flex-col items-center gap-2">

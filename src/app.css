@@ -9,10 +9,6 @@
     font-size: calc(14px + (18 - 14) * ((100vw - 300px) / (1600 - 320)));
   }
 
-  main {
-    @apply min-h-screen max-w-2xl mx-auto px-6 py-16;
-  }
-
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     margin: 0;

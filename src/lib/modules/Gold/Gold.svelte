@@ -47,7 +47,7 @@
 </script>
 
 <main class="p-24">
-  <h1 class="mb-40 text-3xl">Gold Simplifier</h1>
+  <h1 class="mb-20 text-3xl">Gold Simplifier</h1>
 
   <div class="grid grid-cols-2 gap-3">
     <Input name="copper" label="Copper" bind:value={copper} />
