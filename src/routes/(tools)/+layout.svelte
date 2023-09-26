@@ -1,5 +1,5 @@
 <div class="flex min-h-screen">
-  <aside class="flex flex-col items-center px-6 py-12 border-r border-gray-600 min-h-full">
+  <aside class="fixed flex flex-col items-center px-6 py-12 border-r border-gray-600 h-screen w-48">
     <a href="/" class="whitespace-nowrap">DM Tools</a>
 
     <ul class="flex flex-col items-center gap-2 mt-8">
@@ -17,6 +17,8 @@
       </li>
     </ul>
   </aside>
+
+  <div class="w-48" />
 
   <div class="w-full">
     <slot />
