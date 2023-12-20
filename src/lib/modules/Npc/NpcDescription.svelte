@@ -7,6 +7,10 @@
 
 <div class="space-y-3 mt-8">
   {#each Object.entries(npc) as [key, value]}
-    <p><span class="font-bold">{startCase(key)}:</span> {value}</p>
+    {#if key === "imageUrl"}
+      <img src={npc.imageUrl} alt="{npc.name} portrait" />
+    {:else}
+      <p><span class="font-bold">{startCase(key)}:</span> {value}</p>
+    {/if}
   {/each}
 </div>
