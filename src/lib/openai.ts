@@ -25,13 +25,13 @@ export async function generateData<T extends z.ZodRawShape>(
     ${prompt}
 
     Please respond following the specified json schema below. Always respect it at all times. Strictly adhere to it's parameters.
-    Do not add any markdown formatting around the JSON. Just answer with the text.
 
     ${jsonSchema}
   `;
   const completion = await openai.chat.completions.create({
     model: "gpt-4-1106-preview",
-    messages: [{ role: "user", content: fullPrompt }]
+    messages: [{ role: "user", content: fullPrompt }],
+    response_format: { type: "json_object" }
   });
   const response = completion.choices[0].message;
 
