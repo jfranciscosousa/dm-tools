@@ -7,7 +7,7 @@
 
 <div class="space-y-3 mt-8">
   {#each Object.entries(npc) as [key, value]}
-    {#if key === "imageUrl"}
+    {#if key === "imageUrl" && value}
       <img src={npc.imageUrl} alt="{npc.name} portrait" />
     {:else}
       <p><span class="font-bold">{startCase(key)}:</span> {value}</p>

@@ -15,9 +15,14 @@ export async function generateImage(prompt: string) {
   return imageResponse.data[0].url;
 }
 
+type GenerateDataOptions = {
+  model?: OpenAI.Chat.ChatCompletionCreateParams["model"];
+};
+
 export async function generateData<T extends z.ZodRawShape>(
   prompt: string,
-  schema: z.ZodObject<T>
+  schema: z.ZodObject<T>,
+  { model = "gpt-3.5-turbo-1106" }: GenerateDataOptions = {}
 ): Promise<z.infer<z.ZodObject<T>>> {
   const openai = new OpenAI({ apiKey: env.OPENAI_KEY });
   const jsonSchema = JSON.stringify(zodToJsonSchema(schema, "schema"));
@@ -29,7 +34,7 @@ export async function generateData<T extends z.ZodRawShape>(
     ${jsonSchema}
   `;
   const completion = await openai.chat.completions.create({
-    model: "gpt-4-1106-preview",
+    model,
     messages: [{ role: "user", content: fullPrompt }],
     response_format: { type: "json_object" }
   });

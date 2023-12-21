@@ -1,4 +1,4 @@
-import { generateData, generateImage } from "$lib/openai";
+import { generateData } from "$lib/openai";
 import { z } from "zod";
 
 const npcSchema = z.object({
@@ -26,7 +26,10 @@ export async function generateNpc(prompt?: string): Promise<Npc> {
     `Generate a character concept for a DnD 5th edition game. Use these keywords to generate something: ${prompt}`,
     npcSchema
   );
-  const imageResponse = await generateImage(response.appearance);
+  // const imageResponse = await generateImage(response.appearance);
 
-  return { ...response, imageUrl: imageResponse };
+  return {
+    ...response
+    // imageUrl: imageResponse
+  };
 }
