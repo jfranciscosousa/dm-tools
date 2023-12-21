@@ -24,9 +24,6 @@
       10 +
     30 +
     Number(traits);
-
-  $: console.log(UNIT_TYPES[type]?.costModifier, UNIT_SIZES[size]?.costModifier);
-  $: console.log(Number(attack) + Number(power) + Number(defense) + Number(toughness));
 </script>
 
 <main class="p-24">

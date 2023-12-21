@@ -9,7 +9,8 @@ export const actions: Actions = {
     try {
       return { success: true, data: await generateNpc(prompt), prompt };
     } catch (error) {
-      return { success: false, error, prompt };
+      console.error(error);
+      return { success: false, error: (error as Error)?.message || "Unknown error", prompt };
     }
   }
 };
