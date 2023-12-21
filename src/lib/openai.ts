@@ -1,11 +1,10 @@
 import { OpenAI } from "openai";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { OPENAI_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import z from "zod";
 
-const openai = new OpenAI({ apiKey: OPENAI_KEY });
-
 export async function generateImage(prompt: string) {
+  const openai = new OpenAI({ apiKey: env.OPENAI_KEY });
   const imageResponse = await openai.images.generate({
     model: "dall-e-3",
     prompt,
@@ -20,6 +19,7 @@ export async function generateData<T extends z.ZodRawShape>(
   prompt: string,
   schema: z.ZodObject<T>
 ): Promise<z.infer<z.ZodObject<T>>> {
+  const openai = new OpenAI({ apiKey: env.OPENAI_KEY });
   const jsonSchema = JSON.stringify(zodToJsonSchema(schema, "schema"));
   const fullPrompt = `
     ${prompt}

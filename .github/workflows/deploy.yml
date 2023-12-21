@@ -53,7 +53,7 @@ jobs:
           pnpm install
           pnpm build
         env:
-          OPENAI_KEY: mocked
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
