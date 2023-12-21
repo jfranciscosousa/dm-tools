@@ -46,6 +46,7 @@
   <ul class="flex flex-col space-y-6">
     {#each $players as player, index (player.id)}
       <li
+        data-testid="player-listitem"
         class="relative flex sm:flex-col items-center sm:items-baseline justify-between p-3 rounded shadow-xl bg-gray-700"
         transition:fade|local={{ duration: 150 }}
         animate:flip

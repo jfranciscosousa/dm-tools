@@ -41,9 +41,9 @@ test("sorts players based on initiative", async ({ screen, page }) => {
   await insertPlayer(screen, "Barbarian", "18");
   await insertPlayer(screen, "Ranger", "8");
 
-  const playerList = await page.$$("ul li");
+  const playerList = screen.queryAllByTestId("player-listitem");
   const players = await Promise.all(
-    playerList.map(async (player) => {
+    Array.from(await playerList.all()).map(async (player) => {
       return (await player.textContent())?.trim();
     })
   );
@@ -63,7 +63,9 @@ test("deletes a player from the list", async ({ screen, page }) => {
 
   await screen.getByLabel("Delete Warrior Elf 420").click();
 
-  await expect(page.locator("li")).toHaveCount(0);
+  const playerList = screen.queryAllByTestId("player-listitem");
+
+  await expect(playerList).toHaveCount(0);
 });
 
 test("resets the players list", async ({ screen, page }) => {
@@ -76,7 +78,7 @@ test("resets the players list", async ({ screen, page }) => {
   await (await screen.findByText("Reset")).click();
 
   await waitFor(async () => {
-    const playerList = screen.queryAllByRole("listitem");
+    const playerList = screen.queryAllByTestId("player-listitem");
 
     expect(await playerList.count()).toEqual(0);
   });
@@ -132,16 +134,18 @@ test("persists the data even on a reload", async ({ screen, page }) => {
 
   await page.reload();
 
-  const playerList = await screen.findAllByRole("listitem");
-  const players = await Promise.all(
-    Array.from(await playerList.all()).map(async (player) => {
-      return (await player.textContent())?.trim();
-    })
-  );
+  await waitFor(async () => {
+    const playerList = screen.queryAllByTestId("player-listitem");
+    const players = await Promise.all(
+      Array.from(await playerList.all()).map(async (player) => {
+        return (await player.textContent())?.trim();
+      })
+    );
 
-  expect(players).toEqual([
-    "18 - Barbarian Damage: 0",
-    "12 - Warrior Elf 420 Damage: 0",
-    "8 - Ranger Damage: 0"
-  ]);
+    expect(players).toEqual([
+      "18 - Barbarian Damage: 0",
+      "12 - Warrior Elf 420 Damage: 0",
+      "8 - Ranger Damage: 0"
+    ]);
+  });
 });

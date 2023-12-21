@@ -1,6 +1,6 @@
 <script lang="ts">
   import { startCase } from "lodash-es";
-  import type { Npc } from "./generateNpc";
+  import type { Npc } from "./generateNpc.server.server";
 
   export let npc: Npc;
 </script>

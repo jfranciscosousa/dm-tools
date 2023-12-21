@@ -1,10 +1,9 @@
-import { OpenAI } from "openai";
 import { OpenAIChatApi } from "llm-api";
 import { completion } from "zod-gpt";
 import { z } from "zod";
 import { OPENAI_KEY } from "$env/static/private";
+import { fetchDalleImage } from "./fetchDalleImage";
 
-const openai = new OpenAI({ apiKey: OPENAI_KEY });
 const llmApi = new OpenAIChatApi({ apiKey: OPENAI_KEY }, { model: "gpt-3.5-turbo-16k" });
 const npcSchema = z.object({
   name: z.string().describe("Character name"),
@@ -34,15 +33,15 @@ export async function generateNpc(prompt?: string): Promise<Npc> {
       schema: npcSchema
     }
   );
-  const imageResponse = await openai.images.generate({
+  const imageResponse = await fetchDalleImage({
     model: "dall-e-3",
-    prompt: `Generate a fantasty portrait for a 5th edition game using a Midjourney art-style following these this: ${response.data.appearance}. Try to make the portraits full body and add a background to the image that matches the character's story background: ${response.data.background}`,
+    prompt: `Generate a fantasty portrait for a 5th edition game using a Midjourney art-style following this description: ${response.data.appearance}. Try to make the portraits full body.`,
     n: 1,
     size: "1024x1024"
   });
 
   return {
     ...response.data,
-    imageUrl: imageResponse.data[0].url!
+    imageUrl: imageResponse.data[0].url
   };
 }
