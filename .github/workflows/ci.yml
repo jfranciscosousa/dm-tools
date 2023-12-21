@@ -45,4 +45,4 @@ jobs:
           pnpm playwright install
           CI=true pnpm test
         env:
-          OPENAI_KEY: foobar
+          OPENAI_KEY: mocked

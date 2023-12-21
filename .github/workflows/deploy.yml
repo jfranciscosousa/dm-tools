@@ -5,9 +5,18 @@ on:
     branches:
       - "master"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  ci:
+  deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v3
@@ -43,10 +52,12 @@ jobs:
         run: |
           pnpm install
           pnpm build
+        env:
+          OPENAI_KEY: mocked
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "dm-tools"
-          entrypoint: "index.ts"
+          entrypoint: "index.js"
           root: "build"

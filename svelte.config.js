@@ -1,5 +1,5 @@
 import preprocess from "svelte-preprocess";
-import adapter from 'svelte-adapter-deno';
+import adapter from "svelte-adapter-deno";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
