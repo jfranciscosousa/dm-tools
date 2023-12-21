@@ -1,9 +1,6 @@
-import { OpenAI } from "openai";
-import { z } from "zod";
-import { OPENAI_KEY } from "$env/static/private";
 import { generateData } from "$lib/openai";
+import { z } from "zod";
 
-const openai = new OpenAI({ apiKey: OPENAI_KEY });
 const npcSchema = z.object({
   name: z.string().describe("Character name"),
   alignment: z.string().describe("Alignment"),
@@ -22,22 +19,13 @@ const npcSchema = z.object({
     .describe("Tips to roleplay this character. Maneirisms, manner of speech, etc")
 });
 
-export type Npc = z.infer<typeof npcSchema> & { imageUrl?: string };
+export type Npc = z.infer<typeof npcSchema>;
 
 export async function generateNpc(prompt?: string): Promise<Npc> {
   const response = await generateData(
     `Generate a character concept for a DnD 5th edition game. Use these keywords to generate something: ${prompt}`,
     npcSchema
   );
-  const imageResponse = await openai.images.generate({
-    model: "dall-e-3",
-    prompt: `Generate a fantasty portrait for a 5th edition game using a Midjourney art-style following this description: ${response.appearance}. Try to make the portraits full body.`,
-    n: 1,
-    size: "1024x1024"
-  });
 
-  return {
-    ...response,
-    imageUrl: imageResponse.data[0].url
-  };
+  return response;
 }

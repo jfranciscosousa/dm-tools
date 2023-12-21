@@ -29,7 +29,7 @@ export async function generateData<T extends z.ZodRawShape>(
     ${jsonSchema}
   `;
   const completion = await openai.chat.completions.create({
-    model: "gpt-4-1106-preview",
+    model: "gpt-3.5-turbo-1106",
     messages: [{ role: "user", content: fullPrompt }],
     response_format: { type: "json_object" }
   });
