@@ -1,8 +1,6 @@
 import { generateNpc } from "$lib/modules/Npc/generateNpc";
 import type { Actions } from "./$types";
 
-export const prerender = false;
-
 export const actions: Actions = {
   default: async (event) => {
     const formData = await event.request.formData();

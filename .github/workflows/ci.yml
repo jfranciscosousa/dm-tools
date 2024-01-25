@@ -46,3 +46,4 @@ jobs:
           CI=true pnpm test
         env:
           OPENAI_KEY: mocked
+          ADMIN_LOGIN: admin:admin
