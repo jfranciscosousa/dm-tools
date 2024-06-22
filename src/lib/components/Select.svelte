@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { HTMLSelectAttributes } from "svelte/elements";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface $$Props extends Omit<HTMLSelectAttributes, "id" | "class"> {
     label: string;
     value: string;

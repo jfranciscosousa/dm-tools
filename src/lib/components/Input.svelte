@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { HTMLInputAttributes } from "svelte/elements";
 
+  // eslint-disable-next-line
   interface $$Props extends Omit<HTMLInputAttributes, "id" | "class"> {
     label: string;
     value: string;
