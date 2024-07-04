@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NpcDescription from "$lib/modules/Npc/NpcDescription.svelte";
+  import GenericGenAiRenderer from "$lib/components/GenericGenAiRenderer.svelte";
   import NpcForm from "$lib/modules/Npc/NpcForm.svelte";
   import type { ActionData } from "./$types";
 
@@ -15,7 +15,7 @@
   <NpcForm {prompt} bind:loading />
 
   {#if form?.data && !loading}
-    <NpcDescription npc={form?.data} />
+    <GenericGenAiRenderer data={form?.data} />
   {:else if loading}
     <div class="flex justify-center items-center mt-10">
       <div class="loading w-12" />

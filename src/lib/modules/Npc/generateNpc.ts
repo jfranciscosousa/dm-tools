@@ -10,10 +10,10 @@ const npcSchema = z.object({
   background: z.string().describe("Background"),
   backgroundLong: z.string().describe("A small paragraph describing this character story so far"),
   appearance: z.string().describe("A small paragraph describing this character's looks"),
-  personalityTraits: z.string().describe("Personality traits"),
-  ideals: z.string().describe("Ideals"),
-  bonds: z.string().describe("Bonds"),
-  flaws: z.string().describe("Flaws"),
+  personalityTraits: z.array(z.string()).describe("Personality traits"),
+  ideals: z.array(z.string()).describe("Ideals"),
+  bonds: z.array(z.string()).describe("Bonds"),
+  flaws: z.array(z.string()).describe("Flaws"),
   roleplayingTips: z
     .string()
     .describe("Tips to roleplay this character. Maneirisms, manner of speech, etc")
@@ -22,14 +22,8 @@ const npcSchema = z.object({
 export type Npc = z.infer<typeof npcSchema> & { imageUrl?: string };
 
 export async function generateNpc(prompt?: string): Promise<Npc> {
-  const response = await generateData(
+  return generateData(
     `Generate a character concept for a DnD 5th edition game. Use these keywords to generate something: ${prompt}`,
     npcSchema
   );
-  // const imageResponse = await generateImage(response.appearance);
-
-  return {
-    ...response
-    // imageUrl: imageResponse
-  };
 }
