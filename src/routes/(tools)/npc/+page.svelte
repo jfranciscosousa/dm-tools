@@ -15,7 +15,9 @@
   <NpcForm {prompt} bind:loading />
 
   {#if form?.data && !loading}
-    <GenericGenAiRenderer data={form?.data} />
+    <div class="mt-8">
+      <GenericGenAiRenderer data={form?.data} />
+    </div>
   {:else if loading}
     <div class="flex justify-center items-center mt-10">
       <div class="loading w-12" />

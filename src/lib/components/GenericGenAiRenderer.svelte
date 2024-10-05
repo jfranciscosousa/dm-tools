@@ -1,7 +1,9 @@
 <script lang="ts">
   import { startCase } from "lodash-es";
 
-  type GenericDataVal = string | string[] | GenericData | GenericData[];
+  type Primitive = string | boolean | number;
+
+  type GenericDataVal = Primitive | Primitive[] | GenericData | GenericData[];
 
   interface GenericData {
     [key: string]: GenericDataVal;
@@ -12,7 +14,7 @@
   $: console.log(data);
 </script>
 
-<div class="space-y-3 mt-8">
+<div class="space-y-1" data-node>
   {#each Object.entries(data) as [key, value]}
     <p>
       <span class="font-bold">{startCase(key)}:</span>
@@ -30,7 +32,9 @@
           {/each}
         </ul>
       {:else if typeof value === "object"}
-        <svelte:self data={value} />
+        <div class="pl-4">
+          <svelte:self data={value} />
+        </div>
       {:else}
         {value}
       {/if}
