@@ -1,27 +1,31 @@
 <script lang="ts">
   import type { HTMLSelectAttributes } from "svelte/elements";
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface $$Props extends Omit<HTMLSelectAttributes, "id" | "class"> {
+  interface Props extends Omit<HTMLSelectAttributes, "id" | "class"> {
     label: string;
-    value: string;
+    value?: string;
     name: string;
     options: { label: string; value: string }[];
+    ref?: HTMLSelectElement;
   }
 
-  export let value: string;
-  export let label: string;
-  export let name: string;
-  export let options: { label: string; value: string }[];
+  let { value = $bindable(), label, name, options, ref, ...rest }: Props = $props();
 </script>
 
-<div class="form-control w-full max-w-xs">
+<div class="w-full flex flex-col">
   <label class="label" for={name}>
     <span class="label-text">{label}</span>
   </label>
 
-  <select {...$$props} class="select select-bordered" bind:value id={name} {name}>
-    <option selected />
+  <select
+    {...rest}
+    class="select select-bordered w-full"
+    bind:value
+    id={name}
+    {name}
+    bind:this={ref}
+  >
+    <option selected></option>
 
     {#each options as option (option.value)}
       <option value={option.value}>{option.label}</option>

@@ -4,26 +4,31 @@
   import Select from "$lib/components/Select.svelte";
   import { UNIT_SIZES, UNIT_SIZES_OPTIONS, UNIT_TYPES, UNIT_TYPES_OPTIONS } from "./constants";
 
-  let type: keyof typeof UNIT_TYPES;
-  let size: keyof typeof UNIT_SIZES;
-  let attack = "0";
-  let power = "0";
-  let morale = "0";
-  let defense = "0";
-  let toughness = "0";
-  let traits = "0";
+  let type: keyof typeof UNIT_TYPES | undefined = $state();
+  let size: keyof typeof UNIT_SIZES | undefined = $state();
+  let attack = $state("0");
+  let power = $state("0");
+  let morale = $state("0");
+  let defense = $state("0");
+  let toughness = $state("0");
+  let traits = $state("0");
 
-  $: cost =
-    (Number(attack) +
-      Number(power) +
-      (Number(defense) - 10) +
-      (Number(toughness) - 10) +
-      Number(morale) * 2) *
-      UNIT_TYPES[type]?.costModifier *
-      UNIT_SIZES[size]?.costModifier *
-      10 +
-    30 +
-    Number(traits);
+  let cost = $derived.by(() => {
+    if (!type || !size) return 0;
+
+    return (
+      (Number(attack) +
+        Number(power) +
+        (Number(defense) - 10) +
+        (Number(toughness) - 10) +
+        Number(morale) * 2) *
+        UNIT_TYPES[type]?.costModifier *
+        UNIT_SIZES[size]?.costModifier *
+        10 +
+      30 +
+      Number(traits)
+    );
+  });
 </script>
 
 <main class="p-24">

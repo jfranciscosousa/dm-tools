@@ -2,8 +2,12 @@
   import { enhance } from "$app/forms";
   import Input from "$lib/components/Input.svelte";
 
-  export let prompt: string;
-  export let loading = false;
+  interface Props {
+    prompt: string;
+    loading?: boolean;
+  }
+
+  let { prompt = $bindable(), loading = $bindable(false) }: Props = $props();
 </script>
 
 <form

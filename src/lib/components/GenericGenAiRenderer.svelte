@@ -1,4 +1,7 @@
 <script lang="ts">
+  import GenericGenAiRenderer from "./GenericGenAiRenderer.svelte";
+  import { run } from "svelte/legacy";
+
   import { startCase } from "lodash-es";
 
   type Primitive = string | boolean | number;
@@ -9,14 +12,20 @@
     [key: string]: GenericDataVal;
   }
 
-  export let data: GenericData;
+  interface Props {
+    data: GenericData;
+  }
 
-  $: console.log(data);
+  let { data }: Props = $props();
+
+  run(() => {
+    console.log(data);
+  });
 </script>
 
 <div class="space-y-1" data-node>
   {#each Object.entries(data) as [key, value] (key)}
-    <p>
+    <span>
       <span class="font-bold">{startCase(key)}:</span>
 
       {#if Array.isArray(value)}
@@ -24,7 +33,7 @@
           {#each value as entry (entry)}
             <li>
               {#if typeof entry === "object"}
-                <svelte:self data={entry} />
+                <GenericGenAiRenderer data={entry} />
               {:else}
                 {entry}
               {/if}
@@ -33,11 +42,11 @@
         </ul>
       {:else if typeof value === "object"}
         <div class="pl-4">
-          <svelte:self data={value} />
+          <GenericGenAiRenderer data={value} />
         </div>
       {:else}
         {value}
       {/if}
-    </p>
+    </span>
   {/each}
 </div>

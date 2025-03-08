@@ -1,3 +1,11 @@
+<script lang="ts">
+  interface Props {
+    children?: import("svelte").Snippet;
+  }
+
+  let { children }: Props = $props();
+</script>
+
 <div class="flex min-h-screen">
   <aside class="fixed flex flex-col items-center px-6 py-12 border-r border-gray-600 h-screen w-48">
     <a href="/" class="whitespace-nowrap">DM Tools</a>
@@ -18,9 +26,9 @@
     </ul>
   </aside>
 
-  <div class="w-48" />
+  <div class="w-48"></div>
 
   <div class="w-full">
-    <slot />
+    {@render children?.()}
   </div>
 </div>

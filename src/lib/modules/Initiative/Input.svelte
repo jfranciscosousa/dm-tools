@@ -1,13 +1,15 @@
 <script lang="ts">
   import Input from "$lib/components/Input.svelte";
+  import type { FormEventHandler } from "svelte/elements";
   import { addPlayer } from "./players";
 
-  let playerName = "";
-  let initiative = "";
-  let inputRef: Input;
-  $: valid = playerName !== "" && initiative !== "";
+  let playerName = $state("");
+  let initiative = $state("");
+  let inputRef: HTMLInputElement | undefined = $state();
+  let valid = $derived(playerName !== "" && initiative !== "");
 
-  async function handleSubmit() {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
     await addPlayer({
       name: playerName,
       initiative: Number(initiative),
@@ -16,17 +18,13 @@
     playerName = "";
     initiative = "";
 
-    inputRef.focus();
-  }
+    inputRef?.focus();
+  };
 </script>
 
-<form
-  class="flex items-end space-x-4 sm:flex-wrap"
-  on:submit|preventDefault={handleSubmit}
-  autocomplete="off"
->
+<form class="flex items-end space-x-4 sm:flex-wrap" onsubmit={handleSubmit} autocomplete="off">
   <div class="grow">
-    <Input label="Player" name="playerName" bind:value={playerName} bind:this={inputRef} />
+    <Input label="Player" name="playerName" bind:value={playerName} bind:ref={inputRef} />
   </div>
 
   <div class="w-20">

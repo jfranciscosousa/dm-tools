@@ -2,11 +2,11 @@
 <script lang="ts">
   import Input from "$lib/components/Input.svelte";
 
-  let copper = "0";
-  let silver = "0";
-  let gold = "0";
-  let electrum = "0";
-  let platinum = "0";
+  let copper = $state("0");
+  let silver = $state("0");
+  let gold = $state("0");
+  let electrum = $state("0");
+  let platinum = $state("0");
 
   function reset() {
     copper = "0";
@@ -43,7 +43,7 @@
     };
   }
 
-  $: total = simplify(copper, silver, gold, electrum, platinum);
+  let total = $derived(simplify(copper, silver, gold, electrum, platinum));
 </script>
 
 <main class="p-24">
@@ -55,7 +55,7 @@
     <Input name="gold" label="Gold" bind:value={gold} />
     <Input name="electrum" label="Electrum" bind:value={electrum} />
     <Input name="platinum" label="Platinum" bind:value={platinum} />
-    <button class="btn btn-error mt-auto" on:click={reset}>Reset</button>
+    <button class="btn btn-error mt-auto" onclick={reset}>Reset</button>
   </div>
 
   <div class="mt-8">

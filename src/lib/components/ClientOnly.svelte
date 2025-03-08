@@ -1,8 +1,13 @@
 <script lang="ts">
-  import { onMount, type ComponentType } from "svelte";
+  import { onMount, type Component } from "svelte";
 
-  export let impFn: () => Promise<{ default: ComponentType }>;
-  let component: ComponentType;
+  interface Props {
+    impFn: () => Promise<{ default: Component }>;
+    children?: import("svelte").Snippet;
+  }
+
+  let { impFn, children }: Props = $props();
+  let component: Component | undefined = $state();
 
   onMount(async () => {
     component = (await impFn()).default;
@@ -10,7 +15,8 @@
 </script>
 
 {#if component}
-  <svelte:component this={component} />
+  {@const SvelteComponent = component}
+  <SvelteComponent />
 {:else}
-  <slot />
+  {@render children?.()}
 {/if}

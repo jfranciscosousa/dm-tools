@@ -20,7 +20,7 @@
 
   function handleDamage(player: Player) {
     return (event: Event) => {
-      const inputEl = <HTMLInputElement>event.target;
+      const inputEl = event.target as HTMLInputElement;
       const input = inputEl.value;
 
       if (!input.length) return;
@@ -59,11 +59,11 @@
           <p>Damage: {player.damage}</p>
 
           <div class="flex space-x-4 ml-4">
-            <input class="input input-sm" on:change={handleDamage(player)} size="6" />
+            <input class="input input-sm" onchange={handleDamage(player)} size="6" />
 
             <button
               class="sm:absolute sm:right-4 sm:top-1/2 sm:transform sm:-translate-y-1/2"
-              on:click={handleDelete(player.id)}
+              onclick={handleDelete(player.id)}
               aria-label="Delete {player.name}"
             >
               <IconTrash />

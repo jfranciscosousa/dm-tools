@@ -3,9 +3,13 @@
   import NpcForm from "$lib/modules/Npc/NpcForm.svelte";
   import type { ActionData } from "./$types";
 
-  export let form: ActionData | undefined;
+  interface Props {
+    form: ActionData | undefined;
+  }
 
-  let loading: boolean;
+  let { form }: Props = $props();
+
+  let loading: boolean = $state(false);
   let prompt = form?.prompt || "";
 </script>
 
@@ -20,7 +24,7 @@
     </div>
   {:else if loading}
     <div class="flex justify-center items-center mt-10">
-      <div class="loading w-12" />
+      <div class="loading w-12"></div>
     </div>
   {/if}
 </main>

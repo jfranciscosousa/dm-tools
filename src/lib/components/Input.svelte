@@ -1,17 +1,14 @@
 <script lang="ts">
   import type { HTMLInputAttributes } from "svelte/elements";
 
-  // eslint-disable-next-line
-  interface $$Props extends Omit<HTMLInputAttributes, "id" | "class"> {
+  interface Props extends Omit<HTMLInputAttributes, "id" | "class"> {
     label: string;
-    value: string;
+    value?: string;
     name: string;
-    loading?: boolean;
+    ref?: HTMLInputElement;
   }
 
-  export let value: string;
-  export let label: string;
-  export let name: string;
+  let { label, value = $bindable(), name, ref = $bindable(), ...rest }: Props = $props();
 </script>
 
 <div class="w-full flex flex-col">
@@ -19,5 +16,12 @@
     <span class="label-text">{label}</span>
   </label>
 
-  <input {...$$props} class="input input-bordered w-full" bind:value id={name} {name} />
+  <input
+    {...rest}
+    class="input input-bordered w-full"
+    bind:value
+    id={name}
+    {name}
+    bind:this={ref}
+  />
 </div>

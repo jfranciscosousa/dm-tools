@@ -23,7 +23,7 @@
       <div class="flex justify-between">
         <h1 class="text-2xl">Initiative Tracker</h1>
 
-        <button class="btn btn-error" on:click={handleReset}>Reset</button>
+        <button class="btn btn-error" onclick={handleReset}>Reset</button>
       </div>
 
       {#if $currentTurn >= 0}Round number: {$roundNumber}{/if}
@@ -35,15 +35,15 @@
 
     <div class="flex flex-col items-center">
       {#if $currentTurn >= 0}
-        <button class="btn w-32" on:click={nextTurn}>Next turn</button>
+        <button class="btn w-32" onclick={nextTurn}>Next turn</button>
 
-        <button class="btn w-32 mt-4" on:click={endBattle}> End battle </button>
+        <button class="btn w-32 mt-4" onclick={endBattle}> End battle </button>
       {:else}
         <div class="w-full">
           <Input />
         </div>
 
-        <button class="btn btn-primary mt-4" on:click={nextTurn}>Start battle</button>
+        <button class="btn btn-primary mt-4" onclick={nextTurn}>Start battle</button>
       {/if}
     </div>
   </main>
