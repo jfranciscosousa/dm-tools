@@ -1,6 +1,5 @@
 <script lang="ts">
   import GenericGenAiRenderer from "./GenericGenAiRenderer.svelte";
-  import { run } from "svelte/legacy";
 
   import { startCase } from "lodash-es";
 
@@ -17,10 +16,6 @@
   }
 
   let { data }: Props = $props();
-
-  run(() => {
-    console.log(data);
-  });
 </script>
 
 <div class="space-y-1" data-node>
