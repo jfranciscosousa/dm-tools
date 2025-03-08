@@ -15,13 +15,13 @@
 </script>
 
 <div class="space-y-1" data-node>
-  {#each Object.entries(data) as [key, value]}
+  {#each Object.entries(data) as [key, value] (key)}
     <p>
       <span class="font-bold">{startCase(key)}:</span>
 
       {#if Array.isArray(value)}
         <ul class="list-disc pl-4">
-          {#each value as entry}
+          {#each value as entry (entry)}
             <li>
               {#if typeof entry === "object"}
                 <svelte:self data={entry} />

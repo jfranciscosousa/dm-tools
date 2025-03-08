@@ -25,7 +25,7 @@
   on:submit|preventDefault={handleSubmit}
   autocomplete="off"
 >
-  <div class="flex-grow">
+  <div class="grow">
     <Input label="Player" name="playerName" bind:value={playerName} bind:this={inputRef} />
   </div>
 

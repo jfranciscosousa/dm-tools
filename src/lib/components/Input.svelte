@@ -14,10 +14,10 @@
   export let name: string;
 </script>
 
-<div class="form-control w-full">
+<div class="w-full flex flex-col">
   <label class="label" for={name}>
     <span class="label-text">{label}</span>
   </label>
 
-  <input {...$$props} class="input input-bordered" bind:value id={name} {name} />
+  <input {...$$props} class="input input-bordered w-full" bind:value id={name} {name} />
 </div>

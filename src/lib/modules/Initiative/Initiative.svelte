@@ -29,7 +29,7 @@
       {#if $currentTurn >= 0}Round number: {$roundNumber}{/if}
     </nav>
 
-    <div class="players flex-grow my-12 overflow-auto">
+    <div class="players grow my-12 overflow-auto">
       <PlayersList />
     </div>
 

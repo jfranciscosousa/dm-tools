@@ -23,7 +23,7 @@
   <select {...$$props} class="select select-bordered" bind:value id={name} {name}>
     <option selected />
 
-    {#each options as option}
+    {#each options as option (option.value)}
       <option value={option.value}>{option.label}</option>
     {/each}
   </select>

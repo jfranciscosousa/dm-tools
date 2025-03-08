@@ -22,7 +22,7 @@ type GenerateDataOptions = {
 export async function generateData<T extends z.ZodRawShape>(
   prompt: string,
   schema: z.ZodObject<T>,
-  { model = "gpt-3.5-turbo-1106" }: GenerateDataOptions = {}
+  { model = "gpt-4o" }: GenerateDataOptions = {}
 ): Promise<z.infer<z.ZodObject<T>>> {
   const openai = new OpenAI({ apiKey: env.OPENAI_KEY });
   const jsonSchema = JSON.stringify(zodToJsonSchema(schema, "schema"));
