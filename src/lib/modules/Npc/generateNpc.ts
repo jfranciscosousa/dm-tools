@@ -1,5 +1,7 @@
-import { generateData } from "$lib/openai";
+import { generateMarkdown } from "$lib/openai";
 import { z } from "zod";
+import showdown from "showdown";
+import sanitizeHtml from "sanitize-html";
 
 const npcSchema = z.object({
   name: z.string().describe("Character name"),
@@ -31,9 +33,12 @@ const npcSchema = z.object({
 
 export type Npc = z.infer<typeof npcSchema> & { imageUrl?: string };
 
-export async function generateNpc(prompt?: string): Promise<Npc> {
-  return generateData(
+export async function generateNpc(prompt?: string): Promise<string> {
+  const markdown = await generateMarkdown(
     `Generate a character concept for a DnD 5th edition game. Use these keywords to generate something: ${prompt}`,
     npcSchema
   );
+  const html = new showdown.Converter({ tables: true }).makeHtml(markdown);
+
+  return sanitizeHtml(html);
 }

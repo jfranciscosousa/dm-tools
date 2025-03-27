@@ -13,22 +13,37 @@
 
   interface Props {
     data: GenericData;
+    first?: boolean;
   }
 
-  let { data }: Props = $props();
+  let { data, first = true }: Props = $props();
+  let elementToCopy: HTMLElement;
+
+  function handleCopy() {
+    const clipboardItem = new ClipboardItem({
+      "text/plain": new Blob([elementToCopy.innerText], { type: "text/plain" }),
+      "text/html": new Blob([elementToCopy.outerHTML], { type: "text/html" })
+    });
+
+    navigator.clipboard.write([clipboardItem]);
+  }
 </script>
 
-<div class="space-y-1" data-node>
+{#if first}
+  <button onclick={handleCopy}>Copy to clipboard</button>
+{/if}
+
+<div class="flex flex-col gap-2" bind:this={elementToCopy}>
   {#each Object.entries(data) as [key, value] (key)}
-    <span>
-      <span class="font-bold">{startCase(key)}:</span>
+    <div>
+      <b class="font-bold">{startCase(key)}:</b>
 
       {#if Array.isArray(value)}
         <ul class="list-disc pl-4">
           {#each value as entry (entry)}
             <li>
               {#if typeof entry === "object"}
-                <GenericGenAiRenderer data={entry} />
+                <GenericGenAiRenderer data={entry} first={false} />
               {:else}
                 {entry}
               {/if}
@@ -37,11 +52,11 @@
         </ul>
       {:else if typeof value === "object"}
         <div class="pl-4">
-          <GenericGenAiRenderer data={value} />
+          <GenericGenAiRenderer data={value} first={false} />
         </div>
       {:else}
         {value}
       {/if}
-    </span>
+    </div>
   {/each}
 </div>

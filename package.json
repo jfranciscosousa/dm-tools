@@ -23,6 +23,8 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.12",
     "@types/lodash-es": "^4.17.12",
+    "@types/sanitize-html": "^2.13.0",
+    "@types/showdown": "^2.0.6",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "daisyui": "^5.0.0",
     "eslint": "^9.22.0",
@@ -45,6 +47,8 @@
     "dexie-observable": "4.0.1-beta.13",
     "lodash-es": "^4.17.21",
     "openai": "^4.86.2",
+    "sanitize-html": "^2.15.0",
+    "showdown": "^2.1.0",
     "zod": "^3.24.2",
     "zod-to-json-schema": "^3.24.3"
   }

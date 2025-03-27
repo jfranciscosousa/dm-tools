@@ -1,5 +1,6 @@
 <script lang="ts">
-  import GenericGenAiRenderer from "$lib/components/GenericGenAiRenderer.svelte";
+  import MarkdownRenderer from "$lib/components/MarkdownRenderer.svelte";
+  /** eslint-disable svelte/no-at-html-tags */
   import NpcForm from "$lib/modules/Npc/NpcForm.svelte";
   import type { ActionData } from "./$types";
 
@@ -19,9 +20,7 @@
   <NpcForm {prompt} bind:loading />
 
   {#if form?.data && !loading}
-    <div class="mt-8">
-      <GenericGenAiRenderer data={form?.data} />
-    </div>
+    <MarkdownRenderer data={form.data} />
   {:else if loading}
     <div class="flex justify-center items-center mt-10">
       <div class="loading w-12"></div>

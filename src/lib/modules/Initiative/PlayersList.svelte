@@ -43,7 +43,7 @@
 </script>
 
 {#if $players}
-  <ul class="flex flex-col space-y-6">
+  <ul class="flex flex-col gap-6">
     {#each $players as player, index (player.id)}
       <li
         data-testid="player-listitem"
