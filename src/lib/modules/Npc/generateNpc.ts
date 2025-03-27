@@ -21,11 +21,15 @@ const npcSchema = z.object({
     .describe("5th edition stats"),
   background: z.string().describe("Background"),
   backgroundLong: z.string().describe("A small paragraph describing this character story so far"),
-  appearance: z.string().describe("A small paragraph describing this character's looks"),
+  appearance: z
+    .string()
+    .describe(
+      "A small paragraph describing this character's looks. This will be submitted to DALL-E later, please be thorough on the description."
+    ),
   personalityTraits: z.array(z.string()).describe("Personality traits"),
-  ideals: z.array(z.object({ label: z.string(), description: z.string() })).describe("Ideals"),
-  bonds: z.array(z.object({ label: z.string(), description: z.string() })).describe("Bonds"),
-  flaws: z.array(z.object({ label: z.string(), description: z.string() })).describe("Flaws"),
+  ideals: z.array(z.string().describe("Long description")).describe("Ideals"),
+  bonds: z.array(z.string().describe("Long description")).describe("Bonds"),
+  flaws: z.array(z.string().describe("Long description")).describe("Flaws"),
   roleplayingTips: z
     .string()
     .describe("Tips to roleplay this character. Maneirisms, manner of speech, etc")
