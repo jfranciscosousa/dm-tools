@@ -26,7 +26,7 @@
     label="Prompt"
     type="text"
     bind:value={prompt}
-    placeholder="Use some keywords to describe this npc"
+    placeholder="Use some keywords to describe what you want to generate"
     disabled={loading}
   />
 </form>

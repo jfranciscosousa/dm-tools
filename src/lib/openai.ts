@@ -54,6 +54,9 @@ export async function generateMarkdown<T extends z.ZodRawShape>(
     ${prompt}
 
     Please respond following the specified json schema below but format the data into a beautiful markdown page.
+    You can use the json schema as the data source for the markdown document. You don't need to exactly replicate the schema
+    into markdown. You just use it as the source of data but then build the document as best you can for easy
+    human readability.
 
     Do not wrap the output with \`\`\`markdown please. Avoid using h1 and h2 and use only h3.
 

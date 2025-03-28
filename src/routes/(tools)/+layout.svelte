@@ -1,9 +1,7 @@
 <script lang="ts">
-  interface Props {
-    children?: import("svelte").Snippet;
-  }
+  import type { LayoutProps } from "./$types";
 
-  let { children }: Props = $props();
+  let { children }: LayoutProps = $props();
 </script>
 
 <div class="flex min-h-screen">
@@ -21,7 +19,19 @@
         <a class="btn btn-sm btn-primary w-36 text-center" href="/warfare">Warfare</a>
       </li>
       <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/npc">NPC generator</a>
+        <a class="btn btn-sm btn-primary w-36 text-center" href="/generator?variant=npc">
+          NPC generator
+        </a>
+      </li>
+      <li class="contents">
+        <a class="btn btn-sm btn-primary w-36 text-center" href="/generator?variant=tavern">
+          Tavern generator
+        </a>
+      </li>
+      <li class="contents">
+        <a class="btn btn-sm btn-primary w-36 text-center" href="/generator?variant=shop">
+          Shop generator
+        </a>
       </li>
     </ul>
   </aside>

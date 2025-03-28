@@ -12,7 +12,17 @@
       <a class="btn btn-primary w-48 text-center" href="/warfare">Warfare</a>
     </li>
     <li class="contents">
-      <a class="btn btn-primary w-48 text-center" href="/npc">NPC generator</a>
+      <a class="btn btn-primary w-48 text-center" href="/generator?variant=npc">NPC generator</a>
+    </li>
+    <li class="contents">
+      <a class="btn btn-primary w-48 text-center" href="/generator?variant=tavern">
+        Tavern generator
+      </a>
+    </li>
+    <li class="contents">
+      <a class="btn btn-primary w-48 text-center" href="/generator?variant=shop">
+        Shop generator
+      </a>
     </li>
   </ul>
 </main>

@@ -1,23 +1,19 @@
 <script lang="ts">
+  import GenAiForm from "$lib/components/GenAiForm.svelte";
   import MarkdownRenderer from "$lib/components/MarkdownRenderer.svelte";
-  /** eslint-disable svelte/no-at-html-tags */
-  import NpcForm from "$lib/modules/Npc/NpcForm.svelte";
-  import type { ActionData } from "./$types";
+  import { capitalize } from "lodash-es";
+  import type { PageProps } from "./$types";
 
-  interface Props {
-    form: ActionData | undefined;
-  }
-
-  let { form }: Props = $props();
+  let { form, data }: PageProps = $props();
 
   let loading: boolean = $state(false);
   let prompt = form?.prompt || "";
 </script>
 
 <main class="p-24">
-  <h1 class="mb-8 text-3xl">NPC generator</h1>
+  <h1 class="mb-8 text-3xl">{capitalize(data.variant)} generator</h1>
 
-  <NpcForm {prompt} bind:loading />
+  <GenAiForm {prompt} bind:loading />
 
   {#if form?.data && !loading}
     <MarkdownRenderer data={form.data} />

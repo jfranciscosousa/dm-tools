@@ -1,10 +1,8 @@
 <script lang="ts">
   import "../app.css";
-  interface Props {
-    children?: import("svelte").Snippet;
-  }
+  import type { LayoutProps } from "./$types";
 
-  let { children }: Props = $props();
+  let { children }: LayoutProps = $props();
 </script>
 
 {@render children?.()}
