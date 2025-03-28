@@ -1,13 +1,9 @@
 import type { Config } from "@sveltejs/adapter-vercel";
-import type { Actions, PageServerLoad } from "./$types";
+import type { Actions } from "./$types";
 import { generate } from "./_generators";
 
 export const config: Config = {
   runtime: "nodejs22.x"
-};
-
-export const load: PageServerLoad = async ({ url }) => {
-  return { variant: url.searchParams.get("variant") || "npc" };
 };
 
 export const actions: Actions = {
