@@ -1,4 +1,4 @@
-import { generateMarkdown } from "$lib/openai";
+import { generateMarkdown } from "$lib/ai.server";
 import { error } from "@sveltejs/kit";
 import sanitizeHtml from "sanitize-html";
 import showdown from "showdown";

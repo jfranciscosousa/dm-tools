@@ -23,7 +23,7 @@
   }
 </script>
 
-<button class="mt-8 btn btn-lg btn-primary w-[200px]" onclick={handleCopy}>
+<button class="mt-8 btn btn-lg btn-primary w-[240px]" onclick={handleCopy}>
   {#if copied}
     Copied!
   {:else}

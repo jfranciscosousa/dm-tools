@@ -9,3 +9,5 @@ node_modules
 /playwright/.cache/
 .netlify/
 .vercel/
+.vercel
+.env*.local
