@@ -110,7 +110,9 @@ export async function generate(
   if (!options) throw error(404);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markdown = await generateMarkdown(`${options.prompt}:${prompt}`, options.schema as any);
+  const markdown = await generateMarkdown(`${options.prompt}:${prompt}`, options.schema as any, {
+    temperature: 0.8
+  });
   const html = new showdown.Converter({ tables: true }).makeHtml(markdown);
 
   return sanitizeHtml(html);
