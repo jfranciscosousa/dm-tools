@@ -2,100 +2,96 @@ import { generateMarkdown } from "$lib/ai.server";
 import { error } from "@sveltejs/kit";
 import sanitizeHtml from "sanitize-html";
 import showdown from "showdown";
-import { z } from "zod";
 
 export const generators = {
   npc: {
-    schema: z.object({
-      name: z.string().describe("Character name"),
-      alignment: z.string().describe("Alignment"),
-      race: z.string().describe("Race"),
-      class: z.string().describe("Class"),
-      subclass: z.string().describe("Subclass"),
-      stats: z
-        .object({
-          strenght: z.number().min(1).max(30),
-          dexterity: z.number().min(1).max(30),
-          constitution: z.number().min(1).max(30),
-          intelligence: z.number().min(1).max(30),
-          wisdom: z.number().min(1).max(30),
-          charims: z.number().min(1).max(30)
-        })
-        .describe("5th edition stats"),
-      background: z.string().describe("Background"),
-      backgroundLong: z
-        .string()
-        .describe("A small paragraph describing this character story so far"),
-      appearance: z
-        .string()
-        .describe(
-          "A small paragraph describing this character's looks. This will be submitted to DALL-E later, please be thorough on the description."
-        ),
-      personalityTraits: z.array(z.string()).describe("Personality traits"),
-      ideals: z.array(z.string().describe("Long description")).describe("Ideals"),
-      bonds: z.array(z.string().describe("Long description")).describe("Bonds"),
-      flaws: z.array(z.string().describe("Long description")).describe("Flaws"),
-      roleplayingTips: z
-        .string()
-        .describe("Tips to roleplay this character. Maneirisms, manner of speech, etc")
-    }),
+    markdown: `
+    ### <PLACEHOLDER:name>
+
+    **Race: <PLACEHOLDER:npc race>**
+
+    **Alignment: <PLACEHOLDER:npc alignment>**
+
+    ### Description
+    <PLACEHOLDER:a short appearance of the npc>
+
+    ### Backstory
+    <PLACEHOLDER:a short backstory>
+
+    ### Roleplaying tips
+    <PLACEHOLDER: a bullet item list of at most 5 tips for DM to roleplay>
+    `,
     prompt:
-      "Generate a character concept for a DnD 5th edition game. Use these keywords to generate something:"
+      "Generate a npc for a roleplaying game for the DM to improvise with the following prompt: "
   },
   shop: {
-    schema: z.object({
-      name: z.string(),
-      longDescription: z.string().describe("To be read out loud to the players"),
-      secret: z.string(),
-      items: z
-        .array(
-          z.object({
-            price: z.string().describe("Try to balance the price for 5e rules."),
-            name: z.string(),
-            description: z.string().describe("Stats, effects, etc")
-          })
-        )
-        .describe("At least some 6 items"),
-      shopOwner: z.object({
-        name: z.string(),
-        race: z.string(),
-        class: z.string(),
-        physicalDescription: z.string(),
-        backstory: z.string(),
-        dmRoleplayInfo: z.string()
-      }),
-      imagePrompt: z
-        .string()
-        .describe(
-          "Prompt that will be used to generate image with DALL E 3. Put both the shop and the owner in focus"
-        )
-    }),
-    prompt:
-      "Generate a tavern for a DnD 5th edition game. Use these keywords to generate something:"
+    markdown: `
+    ### <PLACEHOLDER:shop name>
+
+    <PLACEHOLDER:long description to be read out loud to the players>
+
+    ### Shop Owner
+
+    **Name: <PLACEHOLDER:shop owner name>**
+    **Race: <PLACEHOLDER:shop owner race>**
+    **Class: <PLACEHOLDER:shop owner class>**
+
+    **Physical Description:** <PLACEHOLDER:shop owner physical description>
+
+    **Backstory:** <PLACEHOLDER:shop owner backstory>
+
+    **DM Roleplay Info:** <PLACEHOLDER:dm roleplay info for shop owner>
+
+    ### Items for Sale
+
+    <PLACEHOLDER:at least 6 items in the format:
+    - **Item Name** - Price gp - Description with stats and effects>
+
+    ### Secret
+
+    <PLACEHOLDER:a secret about the shop>
+
+    ### Image Description
+
+    <PLACEHOLDER:description for DALL-E 3 showing both the shop and owner>
+    `,
+    prompt: "Generate a shop for a DnD 5th edition game. Use these keywords to generate something:"
   },
   tavern: {
-    schema: z.object({
-      name: z.string(),
-      longDescription: z.string().describe("To be read out loud to the players"),
-      secret: z.string(),
-      drinks: z.array(z.object({ shortDescription: z.string(), price: z.string() })),
-      foods: z.array(z.object({ shortDescription: z.string(), price: z.string() })),
-      interestingCharacters: z
-        .array(
-          z.object({
-            name: z.string(),
-            race: z.string(),
-            class: z.string(),
-            physicalDescription: z.string(),
-            backstory: z.string(),
-            dmRoleplayInfo: z.string(),
-            quest: z.string(),
-            where: z.string().describe("What the character is doing inside the tavern")
-          })
-        )
-        .describe("At least 5 characters, and one of them always has to be the barkeep."),
-      imagePrompt: z.string().describe("Prompt that will be used to generate image with DALL E 3")
-    }),
+    markdown: `
+    ### <PLACEHOLDER:tavern name>
+
+    <PLACEHOLDER:long description to be read out loud to the players>
+
+    ### Drinks
+
+    <PLACEHOLDER:drinks list in format:
+    - **Drink Name** - Price gp - Short description>
+
+    ### Foods
+
+    <PLACEHOLDER:foods list in format:
+    - **Food Name** - Price gp - Short description>
+
+    ### Interesting Characters
+
+    <PLACEHOLDER:at least 5 characters, one must be the barkeep, in format:
+
+    **Character Name** (Race Class)
+    - **Physical Description:** description
+    - **Backstory:** backstory
+    - **DM Roleplay Info:** roleplay info
+    - **Quest:** potential quest
+    - **Current Activity:** what they're doing in the tavern>
+
+    ### Secret
+
+    <PLACEHOLDER:a secret about the tavern>
+
+    ### Image Description
+
+    <PLACEHOLDER:description for DALL-E 3 showing the tavern>
+    `,
     prompt:
       "Generate a tavern for a DnD 5th edition game. Use these keywords to generate something:"
   }
@@ -109,8 +105,7 @@ export async function generate(
 
   if (!options) throw error(404);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markdown = await generateMarkdown(`${options.prompt}:${prompt}`, options.schema as any, {
+  const markdown = await generateMarkdown(`${options.prompt}:${prompt}`, options.markdown, {
     temperature: 0.8
   });
   const html = new showdown.Converter({ tables: true }).makeHtml(markdown);
