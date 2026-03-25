@@ -157,8 +157,8 @@
                 <button
                   onclick={handleRemoveCondition(player, condition.label)}
                   aria-label="Remove {condition.label}"
-                  class="cursor-pointer px-1 py-0.5 text-xs opacity-60 hover:opacity-100"
-                >×</button>
+                  class="cursor-pointer px-1 py-0.5 text-xs opacity-60 hover:opacity-100">×</button
+                >
               </span>
             {/each}
             <input
