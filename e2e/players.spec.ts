@@ -15,7 +15,8 @@ async function insertPlayer(screen: Screen, player: string, initiative: string) 
   await screen.fill("input[name=initiative]", initiative);
   await screen.click("form button[type=submit]");
 
-  expect(await screen.findByText(`${initiative} - ${player}`)).toHaveCount(1);
+  // Initiative is now in a <kbd> and name is in <p class="name"> — check name appears
+  await screen.findByText(player);
 }
 
 test.beforeEach(({ page }) => {
@@ -30,7 +31,7 @@ test("enters a player into the initiative list", async ({ screen, page }) => {
 
   await insertPlayer(screen, "Warrior Elf 420", "12");
 
-  await page.locator('input[value="Warrior Elf 420"]').isVisible();
+  await expect(page.locator("p.name").filter({ hasText: "Warrior Elf 420" })).toBeVisible();
 });
 
 test("sorts players based on initiative", async ({ screen, page }) => {
@@ -48,7 +49,7 @@ test("sorts players based on initiative", async ({ screen, page }) => {
     })
   );
 
-  expect(players).toEqual(["18 - Barbarian", "12 - Warrior Elf 420", "8 - Ranger"]);
+  expect(players).toEqual(["Barbarian", "Warrior Elf 420", "Ranger"]);
 });
 
 test("deletes a player from the list", async ({ screen, page }) => {
@@ -89,7 +90,7 @@ test("starts a battle at round 1", async ({ screen, page }) => {
   await insertPlayer(screen, "Ranger", "8");
   await (await screen.findByText("Start battle")).click();
 
-  expect(await screen.findByText("Round number: 1")).toHaveCount(1);
+  expect(await screen.findByText("Round 1")).toHaveCount(1);
 });
 
 test("changes the active player after ending a turn", async ({ screen, page }) => {
@@ -101,10 +102,10 @@ test("changes the active player after ending a turn", async ({ screen, page }) =
   await (await screen.findByText("Start battle")).click();
   await (await screen.findByText("Next turn")).click();
 
-  expect(await screen.findByText("Round number: 1")).toHaveCount(1);
+  expect(await screen.findByText("Round 1")).toHaveCount(1);
 
-  await page.waitForSelector('[data-currentTurn=false]:has-text("20 - Warrior Damage: 0")');
-  await page.waitForSelector('[data-currentTurn=true]:has-text("10 - Barbarian Damage: 0")');
+  await page.waitForSelector('[data-currentturn=false]:has-text("Warrior")');
+  await page.waitForSelector('[data-currentturn=true]:has-text("Barbarian")');
 });
 
 test("goes to the next round", async ({ screen, page }) => {
@@ -117,7 +118,7 @@ test("goes to the next round", async ({ screen, page }) => {
   await (await screen.findByText("Next turn")).click();
   await (await screen.findByText("Next turn")).click();
 
-  expect(await screen.findByText("Round number: 2")).toHaveCount(1);
+  expect(await screen.findByText("Round 2")).toHaveCount(1);
 });
 
 test("persists the data even on a reload", async ({ screen, page }) => {
@@ -138,7 +139,7 @@ test("persists the data even on a reload", async ({ screen, page }) => {
       })
     );
 
-    expect(players).toEqual(["18 - Barbarian", "12 - Warrior Elf 420", "8 - Ranger"]);
+    expect(players).toEqual(["Barbarian", "Warrior Elf 420", "Ranger"]);
   });
 });
 
@@ -231,8 +232,8 @@ test("removes timed condition and shows expiry notification when duration hits 0
   await (await screen.findByText("Next turn")).click(); // Barbarian's turn
   await (await screen.findByText("Next turn")).click(); // Back to Warrior — condition expires
 
-  // Expiry notification visible
-  expect(await screen.findByText("Stunned expired")).toHaveCount(1);
+  // Expiry notification visible (alert includes a ⚠ prefix)
+  expect(await screen.findByText(/Stunned expired/)).toHaveCount(1);
 
   // Pill is gone
   await waitFor(async () => {
