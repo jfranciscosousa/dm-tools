@@ -9,41 +9,47 @@
   const currentTurn = liveQuery("currentTurn", () => getCurrentTurn());
   const roundNumber = liveQuery("roundNumber", () => getRoundNumber());
 
+  let expiredConditions = $state<{ playerName: string; labels: string[] } | null>(null);
+
+  async function handleNextTurn() {
+    const result = await nextTurn();
+    expiredConditions = result.expiredConditions;
+  }
+
   async function handleReset() {
     if (!window.confirm("Are you sure?")) return;
-
     await endBattle();
     await clearPlayers();
   }
 </script>
 
 {#if $players}
-  <main class="flex flex-col max-h-screen h-full p-24">
-    <nav>
-      <div class="flex justify-between">
-        <h1 class="text-2xl">Initiative Tracker</h1>
-
-        <button class="btn btn-error" onclick={handleReset}>Reset</button>
+  <main class="flex flex-col h-screen px-10 py-6">
+    <header class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <h1 class="text-xl font-bold">Initiative Tracker</h1>
+        {#if $currentTurn >= 0}
+          <div class="badge badge-neutral badge-lg">Round {$roundNumber}</div>
+        {/if}
       </div>
+      <button class="btn btn-sm btn-error" onclick={handleReset}>Reset</button>
+    </header>
 
-      {#if $currentTurn >= 0}Round number: {$roundNumber}{/if}
-    </nav>
+    <div class="divider my-3"></div>
 
-    <div class="players grow my-12 overflow-auto">
-      <PlayersList />
+    <div class="grow overflow-auto">
+      <PlayersList {expiredConditions} />
     </div>
 
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col gap-2 mt-4">
       {#if $currentTurn >= 0}
-        <button class="btn w-32" onclick={nextTurn}>Next turn</button>
-
-        <button class="btn w-32 mt-4" onclick={endBattle}> End battle </button>
+        <button class="btn btn-primary btn-block" onclick={handleNextTurn}>Next turn</button>
+        <button class="btn btn-outline btn-block" onclick={endBattle}>End battle</button>
       {:else}
-        <div class="w-full">
-          <Input />
-        </div>
-
-        <button class="btn btn-primary mt-4" onclick={nextTurn}>Start battle</button>
+        <Input />
+        <button class="btn btn-primary btn-block mt-2" onclick={handleNextTurn}>
+          Start battle
+        </button>
       {/if}
     </div>
   </main>

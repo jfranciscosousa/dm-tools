@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Input from "$lib/components/Input.svelte";
   import type { FormEventHandler } from "svelte/elements";
   import { addPlayer } from "./players";
 
@@ -13,7 +12,8 @@
     await addPlayer({
       name: playerName,
       initiative: Number(initiative),
-      damage: 0
+      damage: 0,
+      conditions: []
     });
     playerName = "";
     initiative = "";
@@ -22,14 +22,20 @@
   };
 </script>
 
-<form class="flex items-end space-x-4 sm:flex-wrap" onsubmit={handleSubmit} autocomplete="off">
-  <div class="grow">
-    <Input label="Player" name="playerName" bind:value={playerName} bind:ref={inputRef} />
-  </div>
-
-  <div class="w-20">
-    <Input label="Initiative" name="initiative" type="number" bind:value={initiative} />
-  </div>
-
-  <button class="btn btn-primary" type="submit" disabled={!valid}>Add</button>
+<form class="join w-full" onsubmit={handleSubmit} autocomplete="off">
+  <input
+    class="input input-bordered join-item grow"
+    name="playerName"
+    placeholder="Player name"
+    bind:value={playerName}
+    bind:this={inputRef}
+  />
+  <input
+    class="input input-bordered join-item w-20 font-mono"
+    name="initiative"
+    type="number"
+    placeholder="Init"
+    bind:value={initiative}
+  />
+  <button class="btn btn-primary join-item" type="submit" disabled={!valid}>Add</button>
 </form>

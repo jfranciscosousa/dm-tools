@@ -23,6 +23,11 @@ export default [
   ...tseslint.configs.recommended,
   ...svelte.configs.recommended,
   {
+    rules: {
+      "svelte/no-navigation-without-resolve": ["error", { ignoreLinks: true }]
+    }
+  },
+  {
     files: ["**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
     languageOptions: {
       parserOptions: {

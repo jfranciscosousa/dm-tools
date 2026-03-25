@@ -44,15 +44,11 @@ test("sorts players based on initiative", async ({ screen, page }) => {
   const playerList = screen.queryAllByTestId("player-listitem");
   const players = await Promise.all(
     Array.from(await playerList.all()).map(async (player) => {
-      return (await player.textContent())?.trim();
+      return (await player.locator("p.name").textContent())?.trim();
     })
   );
 
-  expect(players).toEqual([
-    "18 - Barbarian Damage: 0",
-    "12 - Warrior Elf 420 Damage: 0",
-    "8 - Ranger Damage: 0"
-  ]);
+  expect(players).toEqual(["18 - Barbarian", "12 - Warrior Elf 420", "8 - Ranger"]);
 });
 
 test("deletes a player from the list", async ({ screen, page }) => {
@@ -138,14 +134,125 @@ test("persists the data even on a reload", async ({ screen, page }) => {
     const playerList = screen.queryAllByTestId("player-listitem");
     const players = await Promise.all(
       Array.from(await playerList.all()).map(async (player) => {
-        return (await player.textContent())?.trim();
+        return (await player.locator("p.name").textContent())?.trim();
       })
     );
 
-    expect(players).toEqual([
-      "18 - Barbarian Damage: 0",
-      "12 - Warrior Elf 420 Damage: 0",
-      "8 - Ranger Damage: 0"
-    ]);
+    expect(players).toEqual(["18 - Barbarian", "12 - Warrior Elf 420", "8 - Ranger"]);
+  });
+});
+
+test("adds a condition to a player", async ({ screen, page }) => {
+  await page.goto("/initiative");
+  await (await screen.findByText("Reset")).click();
+
+  await insertPlayer(screen, "Warrior", "20");
+
+  await screen.fill("input[name=condition]", "Poisoned");
+  await page.keyboard.press("Enter");
+
+  expect(await screen.findByText("Poisoned")).toHaveCount(1);
+});
+
+test("adds a timed condition showing remaining rounds", async ({ screen, page }) => {
+  await page.goto("/initiative");
+  await (await screen.findByText("Reset")).click();
+
+  await insertPlayer(screen, "Warrior", "20");
+
+  await screen.fill("input[name=condition]", "Exhaustion 3");
+  await page.keyboard.press("Enter");
+
+  expect(await screen.findByText("Exhaustion (3)")).toHaveCount(1);
+});
+
+test("removes a condition manually", async ({ screen, page }) => {
+  await page.goto("/initiative");
+  await (await screen.findByText("Reset")).click();
+
+  await insertPlayer(screen, "Warrior", "20");
+
+  await screen.fill("input[name=condition]", "Poisoned");
+  await page.keyboard.press("Enter");
+
+  await (await screen.findByText("Poisoned")).waitFor();
+  await page.click("button[aria-label='Remove Poisoned']");
+
+  await waitFor(async () => {
+    expect(await screen.queryAllByText("Poisoned").count()).toBe(0);
+  });
+});
+
+test("decrements timed condition on the active player's next turn", async ({ screen, page }) => {
+  await page.goto("/initiative");
+  await (await screen.findByText("Reset")).click();
+
+  // Warrior (20) goes first, Barbarian (10) goes second.
+  await insertPlayer(screen, "Warrior", "20");
+  await insertPlayer(screen, "Barbarian", "10");
+
+  // Scope to Warrior's row (first item in list, sorted by initiative desc)
+  // Two players means two inputs — must scope to avoid ambiguity.
+  await page
+    .locator('[data-testid="player-listitem"]:first-child input[name=condition]')
+    .fill("Stunned 2");
+  await page.keyboard.press("Enter");
+
+  await (await screen.findByText("Start battle")).click();
+  // Warrior is active (first turn — no decrement on battle start)
+  expect(await screen.findByText("Stunned (2)")).toHaveCount(1);
+
+  await (await screen.findByText("Next turn")).click();
+  // Barbarian's turn — Warrior's condition unchanged
+  expect(await screen.findByText("Stunned (2)")).toHaveCount(1);
+
+  await (await screen.findByText("Next turn")).click();
+  // Back to Warrior's turn — decrement
+  expect(await screen.findByText("Stunned (1)")).toHaveCount(1);
+});
+
+test("removes timed condition and shows expiry notification when duration hits 0", async ({
+  screen,
+  page
+}) => {
+  await page.goto("/initiative");
+  await (await screen.findByText("Reset")).click();
+
+  await insertPlayer(screen, "Warrior", "20");
+  await insertPlayer(screen, "Barbarian", "10");
+
+  // Scope to Warrior's row — two players means two inputs.
+  await page
+    .locator('[data-testid="player-listitem"]:first-child input[name=condition]')
+    .fill("Stunned 1");
+  await page.keyboard.press("Enter");
+
+  await (await screen.findByText("Start battle")).click();
+  await (await screen.findByText("Next turn")).click(); // Barbarian's turn
+  await (await screen.findByText("Next turn")).click(); // Back to Warrior — condition expires
+
+  // Expiry notification visible
+  expect(await screen.findByText("Stunned expired")).toHaveCount(1);
+
+  // Pill is gone
+  await waitFor(async () => {
+    expect(await screen.queryAllByText(/Stunned \(\d+\)/).count()).toBe(0);
+  });
+});
+
+test("clears all conditions when battle ends", async ({ screen, page }) => {
+  await page.goto("/initiative");
+  await (await screen.findByText("Reset")).click();
+
+  await insertPlayer(screen, "Warrior", "20");
+
+  await screen.fill("input[name=condition]", "Poisoned");
+  await page.keyboard.press("Enter");
+
+  await (await screen.findByText("Start battle")).click();
+  await (await screen.findByText("End battle")).click();
+
+  await waitFor(async () => {
+    expect(await screen.queryAllByText("Poisoned").count()).toBe(0);
   });
 });

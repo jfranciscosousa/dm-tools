@@ -43,4 +43,4 @@ jobs:
           pnpm check
           pnpm playwright install-deps
           pnpm playwright install
-          CI=true pnpm test
+          pnpm test

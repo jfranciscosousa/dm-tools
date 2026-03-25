@@ -7,7 +7,7 @@
   let { form, data }: PageProps = $props();
 
   let loading: boolean = $state(false);
-  let prompt = form?.prompt || "";
+  let prompt = $derived.by(() => form?.prompt || "");
 </script>
 
 <main class="p-24">

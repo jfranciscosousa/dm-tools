@@ -1,8 +1,14 @@
+export interface Condition {
+  label: string;
+  duration: number | null; // null = infinite (manual removal only); number = remaining rounds
+}
+
 export interface Player {
   id: number;
   name: string;
   initiative: number;
   damage: number;
+  conditions: Condition[];
 }
 
 export interface Setting {
