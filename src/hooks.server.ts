@@ -1,9 +1,11 @@
 import { redirect, type Handle } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
-import { VERCEL_OIDC_TOKEN } from "$env/static/private";
 
 export const handle: Handle = async ({ event, resolve }) => {
-  process.env = { ...process.env, VERCEL_OIDC_TOKEN };
+  // Hack since AI Gateway only reads for process.env
+  if (env.VERCEL_OIDC_TOKEN) {
+    process.env = { ...process.env, VERCEL_OIDC_TOKEN: env.VERCEL_OIDC_TOKEN };
+  }
 
   if (env.PASSWORD) {
     if (event.cookies.get("PASSWORD") !== env.PASSWORD && event.url.pathname != "/login") {
