@@ -10,7 +10,7 @@ type GenerateDataOptions = {
 export async function generateData<T extends z.ZodRawShape>(
   prompt: string,
   schema: z.ZodObject<T>,
-  { model = "openai/gpt-4.1", temperature }: GenerateDataOptions = {}
+  { model = "moonshotai/kimi-k2", temperature }: GenerateDataOptions = {}
 ): Promise<z.infer<z.ZodObject<T>>> {
   const { object } = await generateObject({
     model: gateway(model),
