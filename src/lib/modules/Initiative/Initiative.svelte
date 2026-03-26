@@ -3,17 +3,14 @@
   import { endBattle, getCurrentTurn, getRoundNumber, nextTurn } from "./battle";
   import { clearPlayers, getPlayers } from "./players";
   import Input from "./Input.svelte";
-  import PlayersList from "./PlayersList.svelte";
+  import PlayerList from "./PlayerList.svelte";
 
   const players = liveQuery("players", () => getPlayers());
   const currentTurn = liveQuery("currentTurn", () => getCurrentTurn());
   const roundNumber = liveQuery("roundNumber", () => getRoundNumber());
 
-  let expiredConditions = $state<{ playerName: string; labels: string[] } | null>(null);
-
   async function handleNextTurn() {
-    const result = await nextTurn();
-    expiredConditions = result.expiredConditions;
+    await nextTurn();
   }
 
   async function handleReset() {
@@ -38,7 +35,7 @@
     <div class="divider my-3"></div>
 
     <div class="grow overflow-auto">
-      <PlayersList {expiredConditions} />
+      <PlayerList />
     </div>
 
     <div class="flex flex-col gap-2 mt-4">

@@ -4,6 +4,7 @@ import { getPlayers } from "./players";
 
 const CURRENT_TURN = "currentTurn";
 const ROUND_NUMBER = "roundNumber";
+const EXPIRED_CONDITIONS = "expiredConditions";
 
 export async function getCurrentTurn(): Promise<number> {
   const setting = await client.settings.where({ key: CURRENT_TURN }).first();
@@ -15,14 +16,18 @@ export async function getRoundNumber(): Promise<number> {
   return setting?.value;
 }
 
-export interface NextTurnResult {
-  expiredConditions: { playerName: string; labels: string[] } | null;
+export async function getExpiredConditions(): Promise<{
+  playerName: string;
+  labels: string[];
+} | null> {
+  const setting = await client.settings.where({ key: EXPIRED_CONDITIONS }).first();
+  return setting?.value ?? null;
 }
 
-export async function nextTurn(): Promise<NextTurnResult> {
-  return client.transaction("rw", client.players, client.settings, async () => {
+export async function nextTurn(): Promise<void> {
+  await client.transaction("rw", client.players, client.settings, async () => {
     const players = await getPlayers();
-    if (players.length === 0) return { expiredConditions: null };
+    if (players.length === 0) return;
 
     const currentTurnVal = await getCurrentTurn();
     const roundNumberVal = await getRoundNumber();
@@ -45,14 +50,16 @@ export async function nextTurn(): Promise<NextTurnResult> {
 
     // Skip condition decrement on battle start — no time has passed yet.
     if (isFirstTurn) {
-      return { expiredConditions: null };
+      await client.settings.put({ key: EXPIRED_CONDITIONS, value: null });
+      return;
     }
 
     const player = players[nextIndex];
     const hasTimed = player.conditions.some((c: Condition) => c.duration !== null);
 
     if (!hasTimed) {
-      return { expiredConditions: null };
+      await client.settings.put({ key: EXPIRED_CONDITIONS, value: null });
+      return;
     }
 
     const expiredLabels: string[] = [];
@@ -69,11 +76,10 @@ export async function nextTurn(): Promise<NextTurnResult> {
       .filter((c): c is Condition => c !== null);
 
     await client.players.update(player.id, { conditions: updatedConditions });
-
-    return {
-      expiredConditions:
-        expiredLabels.length > 0 ? { playerName: player.name, labels: expiredLabels } : null
-    };
+    await client.settings.put({
+      key: EXPIRED_CONDITIONS,
+      value: expiredLabels.length > 0 ? { playerName: player.name, labels: expiredLabels } : null
+    });
   });
 }
 
@@ -81,6 +87,7 @@ export async function endBattle(): Promise<void> {
   await client.transaction("rw", client.players, client.settings, async () => {
     await client.settings.put({ key: CURRENT_TURN, value: undefined });
     await client.settings.put({ key: ROUND_NUMBER, value: undefined });
+    await client.settings.put({ key: EXPIRED_CONDITIONS, value: null });
     await client.players.toCollection().modify({ conditions: [] });
   });
 }
