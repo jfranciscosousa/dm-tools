@@ -51,13 +51,10 @@
     const inputEl = event.target as HTMLInputElement;
     const input = inputEl.value;
     if (!input.length) return;
-
     const value = input.slice(1, input.length);
     let damage = player.damage || 0;
-
     if (input.charAt(0) === "+") damage += Number(value);
     if (input.charAt(0) === "-") damage -= Number(value);
-
     editPlayer(player.id, { damage });
     inputEl.value = "";
   }
@@ -65,10 +62,8 @@
   function addCondition(raw: string): void {
     const condition = parseConditionInput(raw);
     if (!condition) return;
-
     const duplicate = player.conditions.some((c: Condition) => c.label === condition.label);
     if (duplicate) return;
-
     editPlayer(player.id, { conditions: [...player.conditions, condition] });
   }
 
@@ -101,36 +96,44 @@
   }
 </script>
 
-<div class="card-body p-4 gap-3">
-  <!-- Header row -->
-  <div class="flex items-center gap-2">
+<div class="px-4 py-3 flex flex-col gap-2.5">
+  <!-- Header row: initiative chip + name + delete -->
+  <div class="flex items-center gap-3">
     {#if editing}
       <!-- svelte-ignore a11y_autofocus -->
       <input
         type="number"
-        class="input input-xs font-mono font-bold w-16 text-center"
+        class="input input-xs w-14 text-center font-mono font-bold"
+        style="height: 2.25rem;"
         value={player.initiative}
         autofocus
         onkeydown={handleInitiativeKeydown}
         onblur={handleInitiativeBlur}
       />
     {:else}
-      <kbd
-        class="kbd kbd-sm font-mono font-bold min-w-8 text-center cursor-pointer hover:brightness-125"
+      <button
+        class="arcane-init-chip"
+        class:active
         onclick={handleInitiativeClick}
-        role="button"
-        tabindex="0"
-        onkeydown={(e) => e.key === "Enter" && handleInitiativeClick()}
         aria-label="Edit initiative for {player.name}"
+        style={active ? "border-color: oklch(72% 0.14 72 / 0.6); color: oklch(72% 0.14 72);" : ""}
       >
         {player.initiative}
-      </kbd>
+      </button>
     {/if}
-    <p class="name font-semibold grow">
-      {#if active}<span class="text-warning mr-1">▶</span>{/if}{player.name}
+
+    <p
+      class="name grow font-semibold truncate"
+      style="font-family: var(--font-sans); font-size: 1rem; color: {active
+        ? 'oklch(83% 0.03 80)'
+        : 'oklch(75% 0.025 70)'};"
+    >
+      {#if active}<span style="color: oklch(72% 0.14 72); margin-right: 0.3rem;">▶</span
+        >{/if}{player.name}
     </p>
+
     <button
-      class="btn btn-ghost btn-xs opacity-50 hover:opacity-100"
+      class="btn btn-ghost btn-xs opacity-40 hover:opacity-90"
       onclick={handleDelete}
       aria-label="Delete {player.name}"
     >
@@ -139,23 +142,27 @@
   </div>
 
   <!-- Damage row -->
-  <div class="flex items-center gap-2 h-7">
-    <span class="text-xs opacity-50 uppercase tracking-wide leading-none">Damage</span>
-    <span class="font-mono font-bold leading-none" class:text-error={player.damage > 0}>
+  <div class="flex items-center gap-3">
+    <span class="arcane-label">Damage</span>
+    <span
+      class="font-mono font-bold text-sm leading-none"
+      style="color: {player.damage > 0 ? 'oklch(60% 0.18 22)' : 'oklch(55% 0.025 65)'};"
+    >
       {player.damage}
     </span>
     <input
-      class="input input-xs w-20 font-mono h-full"
+      class="input input-xs w-24 font-mono"
+      style="height: 1.6rem;"
       onchange={handleDamage}
       placeholder="+5 / -3"
     />
   </div>
 
-  <!-- Expired alert -->
+  <!-- Expired conditions alert -->
   {#if expired.length > 0}
     <div
       role="alert"
-      class="alert alert-warning alert-soft py-1.5 px-3 text-sm"
+      class="alert alert-warning alert-soft py-1 px-2.5 text-xs"
       transition:fade={{ duration: 200 }}
     >
       ⚠ {expired.join(", ")} expired
@@ -163,27 +170,30 @@
   {/if}
 
   <!-- Conditions row -->
-  <div class="flex flex-wrap items-center gap-1.5">
-    {#each player.conditions as condition (condition.label)}
-      <span
-        class="badge badge-sm gap-0.5 items-center"
-        class:badge-warning={condition.duration !== null}
-        class:badge-ghost={condition.duration === null}
-      >
-        {conditionLabel(condition)}
-        <button
-          onclick={handleRemoveCondition(condition.label)}
-          aria-label="Remove {condition.label}"
-          class="cursor-pointer px-1 py-0.5 text-xs opacity-60 hover:opacity-100">×</button
+  {#if player.conditions.length > 0 || true}
+    <div class="flex flex-wrap items-center gap-1.5">
+      {#each player.conditions as condition (condition.label)}
+        <span
+          class="badge badge-xs items-center gap-0.5"
+          class:badge-warning={condition.duration !== null}
+          class:badge-ghost={condition.duration === null}
         >
-      </span>
-    {/each}
-    <input
-      class="input input-xs w-24"
-      name="condition"
-      placeholder="+ condition"
-      onchange={handleConditionChange}
-      onkeydown={handleConditionKeydown}
-    />
-  </div>
+          {conditionLabel(condition)}
+          <button
+            onclick={handleRemoveCondition(condition.label)}
+            aria-label="Remove {condition.label}"
+            class="cursor-pointer px-0.5 opacity-60 hover:opacity-100">×</button
+          >
+        </span>
+      {/each}
+      <input
+        class="input input-xs w-24"
+        style="height: 1.4rem; font-size: 0.62rem;"
+        name="condition"
+        placeholder="+ condition"
+        onchange={handleConditionChange}
+        onkeydown={handleConditionKeydown}
+      />
+    </div>
+  {/if}
 </div>

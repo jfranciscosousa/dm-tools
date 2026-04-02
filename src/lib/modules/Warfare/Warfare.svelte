@@ -15,7 +15,6 @@
 
   let cost = $derived.by(() => {
     if (!type || !size) return 0;
-
     return (
       (Number(attack) +
         Number(power) +
@@ -31,12 +30,15 @@
   });
 </script>
 
-<main class="p-24">
-  <h1 class="mb-20 text-3xl">Warfare calculator</h1>
+<main class="arcane-page px-14 py-10 max-w-2xl">
+  <header class="mb-10">
+    <h1 class="arcane-title text-2xl">Warfare Calculator</h1>
+    <div class="arcane-rule mt-3" style="width: 180px;"></div>
+  </header>
 
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-2 gap-4 mb-8">
     <Select name="type" label="Unit Type" bind:value={type} options={UNIT_TYPES_OPTIONS} />
-    <Input name="traits" label="Traits cost" type="number" bind:value={traits} />
+    <Input name="traits" label="Traits Cost" type="number" bind:value={traits} />
     <Input name="attack" label="Attack" type="number" bind:value={attack} />
     <Input name="defense" label="Defense" type="number" bind:value={defense} />
     <Input name="power" label="Power" type="number" bind:value={power} />
@@ -45,5 +47,12 @@
     <Select name="size" label="Unit Size" bind:value={size} options={UNIT_SIZES_OPTIONS} />
   </div>
 
-  <p>Cost: {cost}</p>
+  <!-- Result panel -->
+  <div class="arcane-panel">
+    <p class="arcane-label mb-3">Unit Cost</p>
+    <div class="flex items-end gap-3">
+      <span class="arcane-stat" style="font-size: 2rem;">{cost}</span>
+      <span class="arcane-label mb-1">gp</span>
+    </div>
+  </div>
 </main>

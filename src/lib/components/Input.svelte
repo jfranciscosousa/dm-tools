@@ -11,14 +11,12 @@
   let { label, value = $bindable(), name, ref = $bindable(), ...rest }: Props = $props();
 </script>
 
-<div class="w-full flex flex-col">
-  <label class="label" for={name}>
-    <span class="label-text">{label}</span>
-  </label>
-
+<div class="w-full flex flex-col gap-1">
+  <label for={name} class="arcane-label">{label}</label>
   <input
     {...rest}
     class="input input-bordered w-full"
+    style="font-family: var(--font-sans);"
     bind:value
     id={name}
     {name}

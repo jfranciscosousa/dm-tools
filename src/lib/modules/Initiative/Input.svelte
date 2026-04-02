@@ -17,7 +17,6 @@
     });
     playerName = "";
     initiative = "";
-
     inputRef?.focus();
   };
 </script>
@@ -25,8 +24,9 @@
 <form class="join w-full" onsubmit={handleSubmit} autocomplete="off">
   <input
     class="input input-bordered join-item grow"
+    style="font-family: var(--font-sans);"
     name="playerName"
-    placeholder="Player name"
+    placeholder="Combatant name"
     bind:value={playerName}
     bind:this={inputRef}
   />

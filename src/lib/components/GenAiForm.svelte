@@ -14,7 +14,6 @@
   method="POST"
   use:enhance={() => {
     loading = true;
-
     return async ({ update }) => {
       update();
       loading = false;
@@ -26,7 +25,7 @@
     label="Prompt"
     type="text"
     bind:value={prompt}
-    placeholder="Use some keywords to describe what you want to generate"
+    placeholder="Keywords to guide the generation..."
     disabled={loading}
   />
 </form>

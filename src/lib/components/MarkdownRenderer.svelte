@@ -12,26 +12,25 @@
       "text/plain": new Blob([elementToCopy.innerText], { type: "text/plain" }),
       "text/html": new Blob([elementToCopy.outerHTML], { type: "text/html" })
     });
-
     navigator.clipboard.write([clipboardItem]);
-
     copied = true;
-
     setTimeout(() => {
       copied = false;
     }, 1000);
   }
 </script>
 
-<button class="mt-8 btn btn-lg btn-primary w-[240px]" onclick={handleCopy}>
-  {#if copied}
-    Copied!
-  {:else}
-    Copy to clipboard
-  {/if}
-</button>
+<div class="mt-6">
+  <button
+    class="btn btn-primary btn-outline btn-sm mb-6"
+    onclick={handleCopy}
+    style="min-width: 160px;"
+  >
+    {#if copied}Copied!{:else}Copy to Clipboard{/if}
+  </button>
 
-<div class="mt-4 prose" bind:this={elementToCopy}>
-  <!-- eslint-disable -->
-  {@html data}
+  <div class="prose max-w-none" bind:this={elementToCopy}>
+    <!-- eslint-disable -->
+    {@html data}
+  </div>
 </div>

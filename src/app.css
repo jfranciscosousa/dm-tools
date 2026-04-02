@@ -5,28 +5,77 @@
 
 @config '../tailwind.config.mjs';
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+/* ─── Arcane Codex — Custom font tokens ─────────────────────────── */
+@theme {
+  --font-sans: "Crimson Text", Georgia, "Times New Roman", serif;
+  --font-serif: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+}
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* ─── Arcane Codex — Override DaisyUI dark theme palette ─────────── */
+[data-theme="dark"] {
+  /* Deep warm near-black backgrounds */
+  --color-base-100: oklch(9% 0.015 55);
+  --color-base-200: oklch(12% 0.02 55);
+  --color-base-300: oklch(16% 0.025 55);
+  --color-base-content: oklch(83% 0.03 80);
+
+  /* Gold primary */
+  --color-primary: oklch(72% 0.14 72);
+  --color-primary-content: oklch(10% 0.01 55);
+
+  /* Muted brown secondary */
+  --color-secondary: oklch(40% 0.08 50);
+  --color-secondary-content: oklch(83% 0.03 80);
+
+  /* Accent — slightly brighter gold */
+  --color-accent: oklch(75% 0.14 75);
+  --color-accent-content: oklch(10% 0.01 55);
+
+  /* Neutral — dark warm grey */
+  --color-neutral: oklch(18% 0.025 55);
+  --color-neutral-content: oklch(72% 0.025 70);
+
+  /* Status colors */
+  --color-info: oklch(65% 0.12 240);
+  --color-info-content: oklch(97% 0 0);
+  --color-success: oklch(62% 0.14 160);
+  --color-success-content: oklch(97% 0 0);
+  --color-warning: oklch(72% 0.14 72);
+  --color-warning-content: oklch(10% 0.01 55);
+  --color-error: oklch(50% 0.2 22);
+  --color-error-content: oklch(97% 0 0);
+
+  /* Shape — sharp edges for a carved/etched look */
+  --rounded-box: 2px;
+  --rounded-btn: 1px;
+  --rounded-badge: 2px;
+  --tab-radius: 1px;
+}
+
+/* ─── Base ────────────────────────────────────────────────────────── */
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: oklch(22% 0.025 55);
   }
-}
 
-@layer base {
   html {
-    @apply bg-gray-800 text-white font-sans;
     font-size: calc(14px + (18 - 14) * ((100vw - 300px) / (1600 - 320)));
+    background-color: oklch(9% 0.015 55);
+    color: oklch(83% 0.03 80);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    letter-spacing: 0.06em;
   }
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -36,6 +85,193 @@
   }
 }
 
+/* ─── Animations ─────────────────────────────────────────────────── */
+@keyframes arcane-breathe {
+  0%,
+  100% {
+    box-shadow:
+      0 0 12px oklch(72% 0.14 72 / 0.15),
+      inset 0 0 16px oklch(72% 0.14 72 / 0.04);
+  }
+  50% {
+    box-shadow:
+      0 0 24px oklch(72% 0.14 72 / 0.28),
+      inset 0 0 24px oklch(72% 0.14 72 / 0.08);
+  }
+}
+
+@keyframes arcane-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arcane-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ─── Arcane component classes ───────────────────────────────────── */
+@layer components {
+  .arcane-title {
+    font-family: var(--font-serif);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: oklch(72% 0.14 72);
+  }
+
+  .arcane-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, oklch(72% 0.14 72 / 0.4), transparent);
+  }
+
+  .arcane-nav-link {
+    font-family: var(--font-serif);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.62rem;
+    color: oklch(58% 0.03 70);
+    transition:
+      color 0.15s ease,
+      text-shadow 0.15s ease;
+    padding: 0.3rem 0.5rem;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .arcane-nav-link:hover {
+    color: oklch(72% 0.14 72);
+  }
+
+  .arcane-nav-link.active {
+    color: oklch(72% 0.14 72);
+    text-shadow: 0 0 10px oklch(72% 0.14 72 / 0.45);
+  }
+
+  .arcane-panel {
+    background-color: oklch(12% 0.02 55);
+    border: 1px solid oklch(22% 0.025 55);
+    padding: 1rem 1.25rem;
+    border-radius: 2px;
+  }
+
+  .arcane-active {
+    border-left: 2px solid oklch(72% 0.14 72) !important;
+    background-color: oklch(13% 0.025 60) !important;
+    animation: arcane-breathe 3s ease-in-out infinite;
+  }
+
+  .arcane-init-chip {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid oklch(30% 0.04 55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: oklch(10% 0.015 55);
+  }
+
+  .arcane-label {
+    font-family: var(--font-serif);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.6rem;
+    color: oklch(50% 0.03 65);
+  }
+
+  .arcane-page {
+    animation: arcane-enter 0.3s ease-out both;
+  }
+
+  .arcane-stat {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: oklch(83% 0.03 80);
+  }
+
+  .arcane-stat.danger {
+    color: oklch(65% 0.18 22);
+  }
+}
+
+/* ─── DaisyUI component overrides ───────────────────────────────── */
 .btn {
   animation: none;
+  font-family: var(--font-serif);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  border-radius: 1px;
+  font-weight: 600;
+}
+
+.input,
+.select {
+  border-radius: 1px;
+}
+
+.input:focus,
+.select:focus {
+  outline-color: oklch(72% 0.14 72 / 0.5);
+  border-color: oklch(72% 0.14 72 / 0.4);
+}
+
+.badge {
+  border-radius: 2px;
+  font-family: var(--font-serif);
+  letter-spacing: 0.04em;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+}
+
+.kbd {
+  border-radius: 2px;
+  border-color: oklch(30% 0.04 55);
+  background-color: oklch(10% 0.015 55);
+  font-family: var(--font-mono);
+}
+
+.divider {
+  color: oklch(30% 0.025 55);
+}
+
+.alert {
+  border-radius: 2px;
+}
+
+.prose {
+  --tw-prose-body: oklch(80% 0.025 75);
+  --tw-prose-headings: oklch(72% 0.14 72);
+  --tw-prose-bold: oklch(85% 0.03 80);
+  --tw-prose-links: oklch(72% 0.14 72);
+  --tw-prose-code: oklch(80% 0.08 72);
+  --tw-prose-bullets: oklch(50% 0.06 72);
+  --tw-prose-hr: oklch(22% 0.025 55);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  font-family: var(--font-serif);
+  letter-spacing: 0.06em;
 }

@@ -12,21 +12,18 @@
   let { value = $bindable(), label, name, options, ref, ...rest }: Props = $props();
 </script>
 
-<div class="w-full flex flex-col">
-  <label class="label" for={name}>
-    <span class="label-text">{label}</span>
-  </label>
-
+<div class="w-full flex flex-col gap-1">
+  <label for={name} class="arcane-label">{label}</label>
   <select
     {...rest}
     class="select select-bordered w-full"
+    style="font-family: var(--font-sans);"
     bind:value
     id={name}
     {name}
     bind:this={ref}
   >
     <option selected></option>
-
     {#each options as option (option.value)}
       <option value={option.value}>{option.label}</option>
     {/each}

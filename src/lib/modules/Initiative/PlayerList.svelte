@@ -11,14 +11,14 @@
 </script>
 
 {#if $players}
-  <ul class="flex flex-col gap-3">
+  <ul class="flex flex-col gap-2">
     {#each $players as player, index (player.id)}
       {@const active = index === $currentTurn}
       <li
         data-testid="player-listitem"
-        class="card card-sm bg-base-200 shadow border-2 border-transparent transition-colors"
-        class:border-warning={active}
-        class:shadow-lg={active}
+        class="border border-transparent transition-all duration-300"
+        class:arcane-active={active}
+        style="background: oklch(12% 0.02 55); border-color: oklch(22% 0.025 55);"
         transition:fade|local={{ duration: 150 }}
         animate:flip
         data-currentTurn={active}

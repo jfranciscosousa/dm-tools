@@ -1,44 +1,71 @@
 <script lang="ts">
   import type { LayoutProps } from "./$types";
+  import { page } from "$app/stores";
 
   let { children }: LayoutProps = $props();
+
+  const navLinks = [
+    { href: "/initiative", label: "Initiative" },
+    { href: "/gold", label: "Gold" },
+    { href: "/warfare", label: "Warfare" },
+    { href: "/generator?variant=npc", label: "NPC Gen" },
+    { href: "/generator?variant=tavern", label: "Tavern Gen" },
+    { href: "/generator?variant=shop", label: "Shop Gen" }
+  ];
+
+  function isActive(href: string): boolean {
+    const [path, query] = href.split("?");
+    if ($page.url.pathname !== path) return false;
+    if (!query) return true;
+    return $page.url.search === "?" + query;
+  }
 </script>
 
 <div class="flex min-h-screen">
-  <aside class="fixed flex flex-col items-center px-6 py-12 border-r border-gray-600 h-screen w-48">
-    <a href="/" class="whitespace-nowrap">DM Tools</a>
+  <!-- Sidebar -->
+  <aside
+    class="fixed flex flex-col items-center px-4 py-10 h-screen w-44"
+    style="background: oklch(10% 0.018 55); border-right: 1px solid oklch(20% 0.025 55);"
+  >
+    <!-- Logo -->
+    <a href="/" class="flex flex-col items-center gap-0 group">
+      <span
+        class="arcane-title text-base tracking-[0.15em] leading-tight group-hover:opacity-80 transition-opacity"
+        >DM</span
+      >
+      <span
+        class="arcane-title text-base tracking-[0.15em] leading-tight group-hover:opacity-80 transition-opacity"
+        >Tools</span
+      >
+    </a>
 
-    <ul class="flex flex-col items-center gap-2 mt-8">
-      <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/initiative">Initiative Tracker</a>
-      </li>
-      <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/gold">Gold Simplifier</a>
-      </li>
-      <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/warfare">Warfare</a>
-      </li>
-      <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/generator?variant=npc">
-          NPC generator
+    <!-- Decorative rule -->
+    <div class="arcane-rule w-full mt-5 mb-6"></div>
+
+    <!-- Nav -->
+    <nav class="flex flex-col items-center gap-0.5 w-full">
+      {#each navLinks as link (link.href)}
+        <a href={link.href} class="arcane-nav-link w-full" class:active={isActive(link.href)}>
+          {link.label}
         </a>
-      </li>
-      <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/generator?variant=tavern">
-          Tavern generator
-        </a>
-      </li>
-      <li class="contents">
-        <a class="btn btn-sm btn-primary w-36 text-center" href="/generator?variant=shop">
-          Shop generator
-        </a>
-      </li>
-    </ul>
+      {/each}
+    </nav>
+
+    <!-- Bottom ornament -->
+    <div class="mt-auto flex flex-col items-center gap-3">
+      <div class="arcane-rule w-full"></div>
+      <span
+        style="font-family: var(--font-serif); font-size: 0.5rem; letter-spacing: 0.2em; color: oklch(28% 0.025 55);"
+        >✦ ✦ ✦</span
+      >
+    </div>
   </aside>
 
-  <div class="w-48"></div>
+  <!-- Spacer -->
+  <div class="w-44 shrink-0"></div>
 
-  <div class="w-full">
+  <!-- Content -->
+  <div class="w-full min-w-0">
     {@render children?.()}
   </div>
 </div>

@@ -10,16 +10,23 @@
   let prompt = $derived.by(() => form?.prompt || "");
 </script>
 
-<main class="p-24">
-  <h1 class="mb-8 text-3xl">{capitalize(data.variant)} generator</h1>
+<main class="arcane-page px-14 py-10 max-w-3xl">
+  <header class="mb-8">
+    <h1 class="arcane-title text-2xl">{capitalize(data.variant)} Generator</h1>
+    <div class="arcane-rule mt-3" style="width: 160px;"></div>
+  </header>
 
-  <GenAiForm {prompt} bind:loading />
+  <div class="arcane-panel mb-6">
+    <p class="arcane-label mb-3">Describe what you seek</p>
+    <GenAiForm {prompt} bind:loading />
+  </div>
 
-  {#if form?.data && !loading}
-    <MarkdownRenderer data={form.data} />
-  {:else if loading}
-    <div class="flex justify-center items-center mt-10">
-      <div class="loading w-12"></div>
+  {#if loading}
+    <div class="flex flex-col items-center gap-4 mt-12">
+      <div class="loading loading-dots w-10" style="color: oklch(72% 0.14 72);"></div>
+      <p class="arcane-label">Consulting the arcane archives...</p>
     </div>
+  {:else if form?.data}
+    <MarkdownRenderer data={form.data} />
   {/if}
 </main>

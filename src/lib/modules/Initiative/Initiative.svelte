@@ -21,24 +21,32 @@
 </script>
 
 {#if $players}
-  <main class="flex flex-col h-screen px-10 py-6">
+  <main class="arcane-page flex flex-col h-screen px-8 py-6">
+    <!-- Header -->
     <header class="flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <h1 class="text-xl font-bold">Initiative Tracker</h1>
+      <div class="flex items-center gap-4">
+        <h1 class="arcane-title text-lg">Initiative Tracker</h1>
         {#if $currentTurn >= 0}
-          <div class="badge badge-neutral badge-lg">Round {$roundNumber}</div>
+          <div
+            class="badge badge-sm"
+            style="font-family: var(--font-serif); letter-spacing: 0.08em; background: oklch(16% 0.025 55); border-color: oklch(30% 0.04 55); color: oklch(72% 0.14 72);"
+          >
+            Round {$roundNumber}
+          </div>
         {/if}
       </div>
-      <button class="btn btn-sm btn-error" onclick={handleReset}>Reset</button>
+      <button class="btn btn-sm btn-error btn-outline" onclick={handleReset}>Reset</button>
     </header>
 
-    <div class="divider my-3"></div>
+    <div class="arcane-rule mt-4 mb-4"></div>
 
+    <!-- Player list -->
     <div class="grow overflow-auto">
       <PlayerList />
     </div>
 
-    <div class="flex flex-col gap-2 mt-4">
+    <!-- Bottom controls -->
+    <div class="flex flex-col gap-2 mt-5">
       {#if $currentTurn >= 0}
         <button class="btn btn-primary btn-block" onclick={handleNextTurn}>Next turn</button>
         <button class="btn btn-outline btn-block" onclick={endBattle}>End battle</button>

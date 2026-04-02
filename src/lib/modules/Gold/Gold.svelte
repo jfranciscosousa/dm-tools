@@ -46,22 +46,39 @@
   let total = $derived(simplify(copper, silver, gold, electrum, platinum));
 </script>
 
-<main class="p-24">
-  <h1 class="mb-20 text-3xl">Gold Simplifier</h1>
+<main class="arcane-page px-14 py-10 max-w-2xl">
+  <header class="mb-10">
+    <h1 class="arcane-title text-2xl">Gold Simplifier</h1>
+    <div class="arcane-rule mt-3" style="width: 160px;"></div>
+  </header>
 
-  <div class="grid grid-cols-2 gap-3">
+  <!-- Input grid -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
     <Input name="copper" label="Copper" bind:value={copper} />
     <Input name="silver" label="Silver" bind:value={silver} />
     <Input name="gold" label="Gold" bind:value={gold} />
     <Input name="electrum" label="Electrum" bind:value={electrum} />
     <Input name="platinum" label="Platinum" bind:value={platinum} />
-    <button class="btn btn-error mt-auto" onclick={reset}>Reset</button>
+    <div class="flex items-end">
+      <button class="btn btn-error btn-outline w-full" onclick={reset}>Reset</button>
+    </div>
   </div>
 
-  <div class="mt-8">
-    Total: {total.simplified.platinum} platinum | {total.simplified.gold} gold | {total.simplified
-      .silver} silver | {total.simplified.copper} copper
+  <!-- Result panel -->
+  <div class="arcane-panel mt-8">
+    <p class="arcane-label mb-4">Simplified Value</p>
+    <div class="grid grid-cols-4 gap-4">
+      {#each [{ label: "Platinum", value: total.simplified.platinum }, { label: "Gold", value: total.simplified.gold }, { label: "Silver", value: total.simplified.silver }, { label: "Copper", value: total.simplified.copper }] as coin (coin.label)}
+        <div class="flex flex-col gap-1">
+          <span class="arcane-label">{coin.label}</span>
+          <span class="arcane-stat">{coin.value}</span>
+        </div>
+      {/each}
+    </div>
+    <div class="arcane-rule mt-5 mb-4"></div>
+    <div class="flex items-center gap-3">
+      <span class="arcane-label">Total in copper</span>
+      <span class="arcane-stat">{total.totalInCopper}</span>
+    </div>
   </div>
-
-  <div class="mt-2">Total in copper: {total.totalInCopper}</div>
 </main>
