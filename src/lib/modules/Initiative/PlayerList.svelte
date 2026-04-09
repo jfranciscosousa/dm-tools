@@ -12,8 +12,8 @@
 
 {#if $players}
   <ul class="flex flex-col gap-2">
-    {#each $players as player, index (player.id)}
-      {@const active = index === $currentTurn}
+    {#each $players as player (player.id)}
+      {@const active = player.id === $currentTurn}
       <li
         data-testid="player-listitem"
         class="border border-transparent transition-all duration-300"

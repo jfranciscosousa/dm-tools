@@ -6,9 +6,9 @@ const CURRENT_TURN = "currentTurn";
 const ROUND_NUMBER = "roundNumber";
 const EXPIRED_CONDITIONS = "expiredConditions";
 
-export async function getCurrentTurn(): Promise<number> {
+export async function getCurrentTurn(): Promise<number | null> {
   const setting = await client.settings.where({ key: CURRENT_TURN }).first();
-  return setting?.value;
+  return setting?.value ?? null;
 }
 
 export async function getRoundNumber(): Promise<number> {
@@ -41,11 +41,13 @@ export async function nextTurn(): Promise<void> {
       nextIndex = 0;
       nextRound = 1;
     } else {
-      nextIndex = (currentTurnVal + 1) % players.length;
+      const currentIndex = players.findIndex((p) => p.id === currentTurnVal);
+      const prevIndex = currentIndex === -1 ? 0 : currentIndex;
+      nextIndex = (prevIndex + 1) % players.length;
       nextRound = nextIndex === 0 ? (roundNumberVal ?? 1) + 1 : (roundNumberVal ?? 1);
     }
 
-    await client.settings.put({ key: CURRENT_TURN, value: nextIndex });
+    await client.settings.put({ key: CURRENT_TURN, value: players[nextIndex].id });
     await client.settings.put({ key: ROUND_NUMBER, value: nextRound });
 
     // Skip condition decrement on battle start — no time has passed yet.

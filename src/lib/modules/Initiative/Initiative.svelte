@@ -26,7 +26,7 @@
     <header class="flex items-center justify-between">
       <div class="flex items-center gap-4">
         <h1 class="arcane-title text-lg">Initiative Tracker</h1>
-        {#if $currentTurn >= 0}
+        {#if $currentTurn != null}
           <div
             class="badge badge-sm"
             style="font-family: var(--font-serif); letter-spacing: 0.08em; background: oklch(16% 0.025 55); border-color: oklch(30% 0.04 55); color: oklch(72% 0.14 72);"
@@ -47,7 +47,7 @@
 
     <!-- Bottom controls -->
     <div class="flex flex-col gap-2 mt-5">
-      {#if $currentTurn >= 0}
+      {#if $currentTurn != null}
         <button class="btn btn-primary btn-block" onclick={handleNextTurn}>Next turn</button>
         <button class="btn btn-outline btn-block" onclick={endBattle}>End battle</button>
       {:else}
