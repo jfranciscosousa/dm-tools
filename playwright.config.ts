@@ -1,5 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const withoutScreen = ({ screen, ...device }: (typeof devices)[keyof typeof devices]) => {
+  void screen;
+  return device;
+};
+
 export default defineConfig({
   use: {
     baseURL: "http://127.0.0.1:4173",
@@ -10,7 +15,7 @@ export default defineConfig({
     {
       name: "chromium",
       use: {
-        ...devices["Desktop Chrome"]
+        ...withoutScreen(devices["Desktop Chrome"])
       }
     },
     ...(process.env.CI
@@ -18,10 +23,10 @@ export default defineConfig({
           {
             name: "safari",
             use: {
-              ...devices["Desktop Safari"]
+              ...withoutScreen(devices["Desktop Safari"])
             }
           },
-          { name: "firefox", use: { ...devices["Desktop Firefox"] } }
+          { name: "firefox", use: { ...withoutScreen(devices["Desktop Firefox"]) } }
         ]
       : [])
   ],
